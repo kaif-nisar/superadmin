@@ -1,0 +1,26 @@
+{
+  "name": "superadmin_lab",
+  "version": "1.0.0",
+  "description": "A franchise-based lab management system",
+  "keywords": [
+    "\"keywords\":",
+    "[\"lab\"",
+    "\"management\"",
+    "\"franchise\"",
+    "\"booking\"",
+    "\"healthcare\"]"
+  ],
+  "license": "UNLICENSED",
+  "author": "prince panchal",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}
