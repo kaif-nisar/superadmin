@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModelStack Admin | Client Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+<h1 class="page-title">Dashboard</h1>
+<!-- Stats Overview -->
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-icon clients-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-value">1,247</div>
+            <div class="stat-label">Total Clients</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon bookings-icon">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-value">3,890</div>
+            <div class="stat-label">Active Bookings</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon models-icon">
+            <i class="fas fa-cube"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-value">42</div>
+            <div class="stat-label">Active Models</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon revenue-icon">
+            <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-value">$219,500</div>
+            <div class="stat-label">Total Revenue</div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="charts-container">
+    <div class="chart-card">
+        <div class="chart-header">
+            <div class="chart-title">Revenue Overview</div>
+            <div class="chart-actions">
+                <button class="chart-btn">Weekly</button>
+                <button class="chart-btn">Monthly</button>
+                <button class="chart-btn">Yearly</button>
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="revenueChart"></canvas>
+        </div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-header">
+            <div class="chart-title">Model Usage</div>
+            <div class="chart-actions">
+                <button class="chart-btn">Export</button>
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="modelUsageChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity Tables -->
+<div class="tables-container">
+    <div class="table-card">
+        <div class="table-header">
+            <div class="table-title">Recent Clients</div>
+            <div class="table-actions">
+                <a href="#">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Model</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="table-avatar">JD</div>
+                            <div class="user-info">
+                                <div class="user-name">John Doe</div>
+                                <div class="user-email">john@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>4-Layer Enterprise</td>
+                    <td>Apr 15, 2025</td>
+                    <td><span class="status status-active">Active</span></td>
+                    <td>
+                        <button class="action-btn"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="table-avatar">AS</div>
+                            <div class="user-info">
+                                <div class="user-name">Alice Smith</div>
+                                <div class="user-email">alice@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>2-Layer Standard</td>
+                    <td>Apr 14, 2025</td>
+                    <td><span class="status status-active">Active</span></td>
+                    <td>
+                        <button class="action-btn"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="table-avatar">RJ</div>
+                            <div class="user-info">
+                                <div class="user-name">Robert Johnson</div>
+                                <div class="user-email">robert@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>3-Layer Advanced</td>
+                    <td>Apr 13, 2025</td>
+                    <td><span class="status status-pending">Pending</span></td>
+                    <td>
+                        <button class="action-btn"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="table-avatar">EW</div>
+                            <div class="user-info">
+                                <div class="user-name">Emma Wilson</div>
+                                <div class="user-email">emma@example.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>1-Layer Basic</td>
+                    <td>Apr 12, 2025</td>
+                    <td><span class="status status-inactive">Inactive</span></td>
+                    <td>
+                        <button class="action-btn"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table-card">
+        <div class="table-header">
+            <div class="table-title">Top Franchisees</div>
+            <div class="table-actions">
+                <a href="#">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Franchisee</th>
+                    <th>Location</th>
+                    <th>Clients</th>
+                    <th>Revenue</th>
+                    <th>Performance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="table-avatar">ML</div>
+                            <div class="user-info">
+                                <div class="user-name">Metro Labs</div>
+                                <div class="user-email">info@metrolabs.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>New York, USA</td>
+                    <td>245</td>
+                    <td>$87,500</td>
+                    <td><span class="status status-active">Excellent</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="table-avatar">TS</div>
+                            <div class="user-info">
+                                <div class="user-name">Tech Solutions</div>
+                                <div class="user-email">contact@techsolutions.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>London, UK</td>
+                    <td>198</td>
+                    <td>$65,200</td>
+                    <td><span class="status status-active">Good</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="table-avatar">DS</div>
+                            <div class="user-info">
+                                <div class="user-name">Data Systems</div>
+                                <div class="user-email">info@datasystems.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Singapore</td>
+                    <td>162</td>
+                    <td>$53,800</td>
+                    <td><span class="status status-pending">Average</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="table-avatar">IN</div>
+                            <div class="user-info">
+                                <div class="user-name">InfoNex</div>
+                                <div class="user-email">support@infonex.com</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Sydney, AU</td>
+                    <td>125</td>
+                    <td>$41,200</td>
+                    <td><span class="status status-pending">Average</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Notifications Section -->
+<div class="notifications-section">
+    <div class="notification-header">
+        <div class="notification-title">Recent Notifications</div>
+        <div class="notification-actions">
+            <a href="#">Mark All as Read</a>
+        </div>
+    </div>
+    <div class="notification-item">
+        <div class="notification-icon icon-info">
+            <i class="fas fa-info"></i>
+        </div>
+        <div class="notification-content">
+            <div class="notification-message">New client <strong>Acme Corp</strong> has registered for the 4-Layer Enterprise package.</div>
+            <div class="notification-time">10 minutes ago</div>
+        </div>
+    </div>
+    <div class="notification-item">
+        <div class="notification-icon icon-success">
+            <i class="fas fa-check"></i>
+        </div>
+        <div class="notification-content">
+            <div class="notification-message">The system update has been successfully completed.</div>
+            <div class="notification-time">2 hours ago</div>
+        </div>
+    </div>
+    <div class="notification-item">
+        <div class="notification-icon icon-warning">
+            <i class="fas fa-exclamation"></i>
+        </div>
+        <div class="notification-content">
+            <div class="notification-message">Server load is reaching capacity. Consider optimizing or upgrading.</div>
+            <div class="notification-time">5 hours ago</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

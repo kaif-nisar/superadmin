@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModelStack Admin | Client Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <div class="content">
+        <h1 class="page-title">Client Management</h1>
+        
+        <div class="client-list-header">
+            <div class="client-filters">
+                <button class="filter-btn active">All Clients</button>
+                <button class="filter-btn">Active</button>
+                <button class="filter-btn">Inactive</button>
+            </div>
+            <button class="form-btn btn-save">
+                <i class="fas fa-plus"></i> Add New Client
+            </button>
+        </div>
+        
+        <div class="client-list">
+            <table class="client-table">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Status</th>
+                        <th>Integration Type</th>
+                        <th>Test Results</th>
+                        <th>Last Activity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar">TC</div>
+                                <div class="user-info">
+                                    <div class="user-name">TechCorp Inc.</div>
+                                    <div class="user-email">contact@techcorp.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="status status-active">Active</span></td>
+                        <td><span class="integration-badge badge-api">API</span></td>
+                        <td>42 tests</td>
+                        <td>Today, 10:30 AM</td>
+                        <td>
+                            <button class="action-btn"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar">GS</div>
+                                <div class="user-info">
+                                    <div class="user-name">Global Solutions Ltd.</div>
+                                    <div class="user-email">info@globalsolutions.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="status status-active">Active</span></td>
+                        <td><span class="integration-badge badge-embedded">Embedded</span></td>
+                        <td>78 tests</td>
+                        <td>Yesterday</td>
+                        <td>
+                            <button class="action-btn"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar">BT</div>
+                                <div class="user-info">
+                                    <div class="user-name">BlueTech Services</div>
+                                    <div class="user-email">support@bluetech.net</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="status status-inactive">Inactive</span></td>
+                        <td><span class="integration-badge badge-none">None</span></td>
+                        <td>13 tests</td>
+                        <td>Feb 15, 2025</td>
+                        <td>
+                            <button class="action-btn"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar">DP</div>
+                                <div class="user-info">
+                                    <div class="user-name">DataPulse Analytics</div>
+                                    <div class="user-email">hello@datapulse.io</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="status status-active">Active</span></td>
+                        <td><span class="integration-badge badge-api">API</span></td>
+                        <td>56 tests</td>
+                        <td>Feb 12, 2025</td>
+                        <td>
+                            <button class="action-btn"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar">NW</div>
+                                <div class="user-info">
+                                    <div class="user-name">NexusWave Inc.</div>
+                                    <div class="user-email">admin@nexuswave.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="status status-pending">Pending</span></td>
+                        <td><span class="integration-badge badge-embedded">Embedded</span></td>
+                        <td>8 tests</td>
+                        <td>Feb 8, 2025</td>
+                        <td>
+                            <button class="action-btn"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Client Details Modal -->
+        <div class="modal-overlay" id="clientDetailsModal">
+            <div class="modal" style="width: 600px;">
+                <div class="modal-header">
+                    <h3 class="modal-title">Client Details</h3>
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="client-detail-header">
+                        <div class="client-detail-logo">TC</div>
+                        <div class="client-detail-info">
+                            <h2 class="client-detail-name">TechCorp Inc.</h2>
+                            <p class="client-detail-contact">contact@techcorp.com | +1-555-123-4567</p>
+                        </div>
+                        <div class="client-detail-status">
+                            <span class="status status-active">Active</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active">Overview</div>
+                        <div class="tab">Test Results</div>
+                        <div class="tab">Reports</div>
+                        <div class="tab">Integration</div>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <div class="detail-section">
+                            <h4 class="detail-title">Client Information</h4>
+                            <div class="detail-row">
+                                <div class="detail-label">Company Name</div>
+                                <div class="detail-value">TechCorp Inc.</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Industry</div>
+                                <div class="detail-value">Information Technology</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Account Manager</div>
+                                <div class="detail-value">Sarah Johnson</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Client Since</div>
+                                <div class="detail-value">January 15, 2025</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Contract Type</div>
+                                <div class="detail-value">Enterprise License</div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h4 class="detail-title">Usage Statistics</h4>
+                            <div class="detail-stats">
+                                <div class="detail-stat">
+                                    <div class="stat-number">42</div>
+                                    <div class="stat-name">Total Tests</div>
+                                </div>
+                                <div class="detail-stat">
+                                    <div class="stat-number">4</div>
+                                    <div class="stat-name">Models Used</div>
+                                </div>
+                                <div class="detail-stat">
+                                    <div class="stat-number">85%</div>
+                                    <div class="stat-name">Success Rate</div>
+                                </div>
+                                <div class="detail-stat">
+                                    <div class="stat-number">12</div>
+                                    <div class="stat-name">Active Users</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="form-btn btn-cancel">Close</button>
+                    <button class="form-btn btn-save">Edit Client</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Add New Client Modal -->
+        <div class="modal-overlay" id="addClientModal">
+            <div class="modal" style="width: 500px;">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add New Client</h3>
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <label class="form-label">Company Name</label>
+                        <input type="text" class="form-input" placeholder="Enter company name">
+                    </div>
+                    <div class="form-row">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" placeholder="Enter email address">
+                    </div>
+                    <div class="form-row">
+                        <label class="form-label">Phone</label>
+                        <input type="text" class="form-input" placeholder="Enter phone number">
+                    </div>
+                    <div class="form-row">
+                        <label class="form-label">Industry</label>
+                        <select class="form-select">
+                            <option>Select industry</option>
+                            <option>Information Technology</option>
+                            <option>Healthcare</option>
+                            <option>Finance</option>
+                            <option>Manufacturing</option>
+                            <option>Education</option>
+                            <option>Retail</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-label">Account Manager</label>
+                        <select class="form-select">
+                            <option>Assign account manager</option>
+                            <option>Sarah Johnson</option>
+                            <option>Michael Lee</option>
+                            <option>Jessica Smith</option>
+                            <option>David Wilson</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-label">Integration Type</label>
+                        <select class="form-select">
+                            <option>Select integration type</option>
+                            <option>API</option>
+                            <option>Embedded</option>
+                            <option>None</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="form-btn btn-cancel">Cancel</button>
+                    <button class="form-btn btn-save">Save Client</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="client-management.js"></script>
+</body>
+</html>

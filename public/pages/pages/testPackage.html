@@ -1,0 +1,169 @@
+<html>
+<head>
+    <title>Test Packages</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .container {
+            width: 100%;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .header .beta {
+            background-color: #ffebee;
+            color: #e91e63;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .how-it-works {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .how-it-works i {
+            margin-right: 10px;
+        }
+        .tabs {
+            display: flex;
+            margin-top: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .tab.active {
+            border-bottom: 2px solid #3f51b5;
+            color: #3f51b5;
+        }
+        .tab span {
+            background-color: #e0e0e0;
+            border-radius: 12px;
+            padding: 2px 8px;
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        .search {
+            margin-top: 20px;
+            position: relative;
+        }
+        .search input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f5f5f5;
+        }
+        .action {
+            color: #3f51b5;
+            cursor: pointer;
+        }
+        .add-new {
+            background-color: #3f51b5;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Test packages <span class="beta">BETA</span></h1>
+            <a href="#"  onclick="loadPage('addPackage')" class="add-new" ></i> Add new</a>
+        </div>
+        <div class="feedback">
+            Please email to any feedbacks or suggestions regarding this feature to <a href="mailto:support@labsmartlis.com">support@labsmartlis.com</a>
+        </div>
+        <div class="how-it-works">
+            <i class="fas fa-question-circle"></i>
+            <span>How it works?</span>
+        </div>
+        <div class="tabs">
+            <div class="tab active" id="in-ratelist-tab" onclick="showRatelist('in-ratelist')">In ratelist <span>31</span></div>
+            <div class="tab" id="not-in-ratelist-tab" onclick="showRatelist('not-in-ratelist')">Not in ratelist <span>1</span></div>
+        </div>
+        <div class="search">
+            <input type="text" placeholder="Search in page">
+        </div>
+        <table class="table" id="in-ratelist">
+            <thead>
+                <tr>
+                    <th>S. NO.</th>
+                    <th>NAME</th>
+                    <th>FEE</th>
+                    <th>INCLUDED TESTS AND PANELS</th>
+                    <th>SAMPLE TYPE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1.</td>
+                    <td>AMH PLUS</td>
+                    <td>Rs. 3,500</td>
+                    <td>Both</td>
+                    <td>PROLACTIN, Luteinising Hormone, LH, Follicle Stimulating Hormone, FSH</td>
+                    <td><span class="action">Edit</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table hidden" id="not-in-ratelist">
+            <thead>
+                <tr>
+                    <th>S. NO.</th>
+                    <th>NAME</th>
+                    <th>FEE</th>
+                    <th>INCLUDED TESTS AND PANELS</th>
+                    <th>SAMPLE TYPE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1.</td>
+                    <td>Example Test</td>
+                    <td>Rs. 500</td>
+                    <td>Both</td>
+                    <td>Example Test Panel</td>
+                    <td><span class="action">Edit</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="testPackage.js"></script>
+</body>
+</html>

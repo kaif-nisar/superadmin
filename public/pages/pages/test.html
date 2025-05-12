@@ -1,0 +1,251 @@
+<html>
+
+<head>
+    <title>Test Database</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .container202 {
+            padding: 25px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .filter-container {
+            margin: 20px 0;
+        }
+
+        .filter-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .filter-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .categories {
+            margin: 10px 0;
+        }
+
+        .categories span {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .categories span:hover {
+            background-color: #f0f0f0;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .search-container i {
+            margin-left: 10px;
+            color: #888;
+        }
+
+        .protip {
+            font-size: 0.9em;
+            color: #888;
+            margin-left: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f9f9f9;
+        }
+
+        .actions a {
+            margin-right: 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        /* Add smooth transition for all rows */
+        tbody tr {
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        /* Highlight the row being dragged */
+        tbody tr.dragging {
+            background-color: #bde0ff;
+            /* Light blue background for dragging row */
+            opacity: 0.8;
+            /* Slightly transparent */
+            transform: scale(1.02);
+            /* Slightly enlarge the row */
+        }
+
+        /* Indicate the drop target */
+        tbody tr.drop-target {
+            border: 2px dashed #007bff;
+            /* Dashed border for drop target */
+        }
+
+        .order i {
+            padding-right: 20px;
+        }
+
+        /* Loader container styling */
+        .loader {
+            position: absolute;
+            top: 80%;
+            left: 60%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Spinner styling */
+        .loader .spinner {
+            width: 30px;
+            height: 30px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin2 1s linear infinite;
+            margin-bottom: 10px;
+            /* Space between spinner and text */
+        }
+
+        /* Text below the spinner */
+        .loader p {
+            font-size: 14px;
+            color: #555;
+            margin: 0;
+        }
+
+        #tableContainer {
+            max-height: 50vh;
+            overflow: auto;
+            border: 1px solid #c0c0c0;
+        }
+
+        #tableContainer::-webkit-scrollbar {
+            display: none;
+        }
+
+        .protip i {
+            color: rgb(185, 185, 0);
+        }
+
+        /* Keyframes for spinning animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container202">
+        <h1>Test database</h1>
+
+    <!-- <a data-page="addTestDocument">
+        <div class="filter-container">
+            <button title="Add Test as Document">+ Add Document</button>
+        </div>
+    </a> -->
+    <!-- <a data-page="addTest">
+        <div class="filter-container">
+            <button title="Add Test as Parameter">+ Add new</button>
+        </div>
+    </a> -->
+
+    <a onclick>
+        <div class="filter-container">
+            <button onclick="loadPage('addTest')" class="add-new">+ Add new</button>
+        </div>
+    </a>
+
+    <a onclick>
+        <div class="filter-container">
+            <button title="Add Test as Document" onclick="loadPage('addTestDocument')" class="add-new">+ Add Document</button>
+        </div>
+    </a>
+
+        <div class="filter-container">
+        </div>
+
+        <div class="search-container">
+            <input type="text" placeholder="Search in page" id="searchInput" oninput="filterTable()">
+            <i class="fas fa-search"></i>
+            <span class="protip"><i class="fas fa-lightbulb"></i> ProTip! Drag and Drop row to reorder tests.</span>
+        </div>
+
+        <div id="tableContainer">
+            <table id="categoriesTable">
+                <thead>
+                    <tr>
+                        <th>ORDER</th>
+                        <th>Name</th>
+                        <th>PRICE</th>
+                        <th>SAMPLE TYPE</th>
+                        <th>SHORT NAME</th>
+                        <th>CATEGORY</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyid">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+    <script src="test.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,185 @@
+<html>
+
+<head>
+    <title>Test Database</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .filter-container {
+            margin: 20px 0;
+        }
+
+        .filter-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .filter-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .categories {
+            margin: 10px 0;
+        }
+
+        .categories span {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .categories span:hover {
+            background-color: #f0f0f0;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .search-container i {
+            margin-left: 10px;
+            color: #888;
+        }
+
+        .protip {
+            font-size: 0.9em;
+            color: #888;
+            margin-left: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f9f9f9;
+        }
+
+        .actions a {
+            margin-right: 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+        .contarq{
+            margin: 35px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contarq">
+    <h1>Test database</h1>
+    <p>Important: It is required that your laboratory <a href="#">proofreads</a> and updates the provided reference
+        range before using it for printing lab reports.</p>
+
+    <a onclick>
+        <div class="filter-container">
+            <button onclick="loadPage('addTest')" class="add-new">+ Add new</button>
+        </div>
+    </a>
+
+    <div class="filter-container">
+        <span><i class="fas fa-filter"></i> Filter by category:</span>
+        <span>All</span>
+        <span>Biochemistry</span>
+        <span>Haematology</span>
+        <span>LIPID PROFILE</span>
+        <span>LIVER FUNCTION TESTS</span>
+        <span>KIDNEY FUNCTION TESTS</span>
+        <span>Clinical Pathology</span>
+        <span>GLYCATED HAEMOGLOBIN (HBA1C)</span>
+        <span>Serology & Immunology</span>
+        <span>Miscellaneous</span>
+        <span>MOLECULAR</span>
+        <span>Endocrinology</span>
+        <span>PROLACTIN</span>
+        <span>Luteinising Hormone, LH</span>
+        <span>Follicle Stimulating Hormone, FSH</span>
+        <span>ANTI MULLERIAN HORMONE(AMH)</span>
+        <span>LUPUS ANTICOAGULANT (DRVVT)</span>
+        <span>CARDIOLIPIN ANTIBODIES IGG</span>
+        <span>CARDIOLIPIN ANTIBODIES IGM</span>
+        <span>ANA_PROFILE</span>
+        <span>MICROSCOPY</span>
+        <span>BICARBONATE</span>
+        <span>Immunology</span>
+        <span>Coagulation</span>
+        <span>FIBRINOGEN DEGRADATION PRODUCT</span>
+        <span>ADRENO CORTICOTROPHIC HORMONE (ACTH)</span>
+        <span>Fasting Blood Sugar</span>
+        <span>25 Hydroxy (OH) Vitamin D</span>
+        <span>Vitamins</span>
+    </div>
+
+    <div class="search-container">
+        <input type="text" placeholder="Search in page" id="searchInput" oninput="filterTable()">
+        <i class="fas fa-search"></i>
+        <span class="protip"><i class="fas fa-lightbulb"></i> ProTip! Select a category to order tests.</span>
+    </div>
+
+    <div id="tableContainer">
+        <table id="categoriesTable">
+            <thead>
+                <tr>
+                    <th>ORDER</th>
+                    <th>Name</th>
+                    <th>PRICE</th>
+                    <th>SAMPLE TYPE</th>
+                    <th>SHORT NAME</th>
+                    <th>CATEGORY</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyid">
+                <tr>
+                    <td>Test 4</td>
+                    <td>Short Name 4</td>
+                    <td>Biochemistry</td>
+                    <td>liochemistry</td>
+                    <td class="actions"><a data-page="addTest">Edit</a> <a href="#">view</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</body>
+
+</html>

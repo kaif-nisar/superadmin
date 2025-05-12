@@ -1,0 +1,209 @@
+<html>
+<head>
+    <title>Test Panels</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .container{
+            width: 95%;
+            margin: 20px auto;
+        }
+        h1 {
+            font-size: 32px;
+            color: #333;
+        }
+        .info-box {
+            background-color: #e9f0f7;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .info-box i {
+            margin-right: 10px;
+            color: #5a9bd5;
+        }
+        .add-new {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f5f6fa;
+            color: #333;
+        }
+        td {
+            color: #333;
+        }
+        .edit-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .edit-link i {
+            margin-right: 5px;
+        }
+        .order-icon {
+            cursor: pointer;
+            color: #333;
+        }
+        .actions a {
+            color: #007bff;
+            cursor: pointer;
+        }
+        .pannelTests {
+            width: 30%;
+        }
+        /* Add smooth transition for all rows */
+        tbody tr {
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        /* Highlight the row being dragged */
+        tbody tr.dragging {
+            background-color: #bde0ff;
+            /* Light blue background for dragging row */
+            opacity: 0.8;
+            cursor: grab;
+            /* Slightly transparent */
+            transform: scale(1.02);
+            /* Slightly enlarge the row */
+        }
+
+        /* Indicate the drop target */
+        tbody tr.drop-target {
+            border: 2px dashed #007bff;
+            /* Dashed border for drop target */
+        }
+
+        .order i {
+            padding-right: 20px;
+        }
+
+        /* Loader container styling */
+        .loader {
+            position: absolute;
+            top: 80%;
+            left: 60%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Spinner styling */
+        .loader .spinner {
+            width: 30px;
+            height: 30px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin2 1s linear infinite;
+            margin-bottom: 10px;
+            /* Space between spinner and text */
+        }
+
+        /* Text below the spinner */
+        .loader p {
+            font-size: 14px;
+            color: #555;
+            margin: 0;
+        }
+        .contar1{
+            margin: 35px;
+        }
+        table {
+            width: 100%;
+        }
+        /* Keyframes for spinning animation */
+        @keyframes spin2 {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+          /* Mobile-specific styles */
+          @media (max-width: 768px) {
+            .table-container {
+                max-width: 100%;
+                overflow-x: auto;
+                display: block;
+            }
+            .container{
+                display: inline-block;
+            }
+            a{
+                width: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test panels</h1>
+        <div class="info-box">
+            <i class="fas fa-question-circle"></i>
+            <span>How to reorder?</span>
+        </div>
+        <a href="#" data-page="addPanels" class="add-new">+ Add new</a>
+        <div class="table-container">
+        <table id="pannel-table">
+            <thead>
+                <tr>
+                    <th>ORDER</th>
+                    <th>NAME</th>
+                    <th>CATEGORY</th>
+                    <th>PRICE</th>
+                    <th class="pannelTests">TESTS</th>
+                    <th>SAMPLE TYPES</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><i class="fas fa-arrows-alt-v order-icon"></i> 1.</td>
+                    <td>Complete Blood Count (CBC)</td>
+                    <td>Haematology</td>
+                    <td>Hemoglobin, Total Leukocyte Count, Differential Leukocyte Count, Platelet...<br>(14 tests)</td>
+                    <td>Complete Blood Count (CBC), OCCU FIT 3, OCCU FIT 4, OCCU FIT 6, Pregnancy Profile - 2, Pregnancy...</td>
+                    <td><a href="#" class="edit-link"><i class="fas fa-edit"></i> Edit</a></td>
+                </tr>
+                <tr>
+                    <td><i class="fas fa-arrows-alt-v order-icon"></i> 2.</td>
+                    <td>CBC (with absolute counts)</td>
+                    <td>Haematology</td>
+                    <td>Hemoglobin, Total Leukocyte Count, Differential Leukocyte Count, Differential...<br>(15 tests)</td>
+                    <td>Anaemia Profile, ANTENATAL PROFILE (ANP), CBC (with absolute counts), OCCU FIT 1, OCCU FIT 2, PCOD...</td>
+                    <td><a href="#" class="edit-link"><i class="fas fa-edit"></i> Edit</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <script src="testPanel.js"></script>
+</body>
+</html>
