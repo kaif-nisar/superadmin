@@ -23,7 +23,7 @@
 //     allpannels.forEach(pannel => {
 //         const row = document.createElement('tr');
 //         orderId++;
-        
+
 //         row.innerHTML = `
 //         <td>${orderId}</td>
 //         <td>${pannel.name}</td>
@@ -63,26 +63,37 @@ async function fetchingPannelsfromDatabase() {
     }
 }
 
-async function loadcategory(id) {
-    try {
-        const response = await fetch(`${BASE_URL}/api/v1/user/categoryById`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id }),
-        });
-        const catdoc = await response.json();
-        return catdoc.category;
-    } catch (error) {
-        console.log(error);
-    }
-}
+// async function loadcategory(id) {
+//     try {
+//         const response = await fetch(`${BASE_URL}/api/v1/user/categoryById`, {
+//             method: "POST",
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({ id }),
+//         });
+//         const catdoc = await response.json();
+//         return catdoc.category;
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 async function populatePannelsTable(pannels) {
     const tbody = document.querySelector("#pannel-table tbody");
     tbody.innerHTML = "";
 
+    const noMatchRow = document.createElement("tr");
+    noMatchRow.id = "noMatch";
+    noMatchRow.style.display = "none";
+
+    const cell = document.createElement("td");
+    cell.setAttribute("colspan", "7");
+    cell.textContent = "No matching row";
+    cell.style.textAlign = "center";
+
+    noMatchRow.appendChild(cell);
+    tbody.appendChild(noMatchRow);
     // Sort pannels by the order field if available
     pannels.sort((a, b) => a.order - b.order);
 
@@ -91,12 +102,12 @@ async function populatePannelsTable(pannels) {
         row.setAttribute('draggable', true);
         row.setAttribute('data-id', pannel.order); // Store order ID for reference
 
-        const catdoc = await loadcategory(pannel.category);
+        // const catdoc = await loadcategory(pannel.category);
 
         row.innerHTML = `
             <td class="order"><i class="fa-solid fa-up-down"></i>${pannel.order}</td>
             <td>${pannel.name}</td>
-            <td>${catdoc}</td>
+            <td>${pannel.category}</td>
             <td>${pannel.price}</td>
             <td class="pannelTests">${pannel.tests}</td>
             <td>${pannel.sample_types}</td>
@@ -190,22 +201,22 @@ function updateOrder() {
 }
 
 async function saveOrderToServer(updatedOrder) {
-       // Select table and container elements
-       const tableContainer = document.getElementById("pannel-table"); // Assume this is the container holding the table
-       const table = document.getElementById("categoriesTable");
-   
-       // Create and show loading animation
-       const loader = document.createElement("div");
-       loader.id = "loading";
-       loader.className = "loader"; // Add a class to apply CSS animation
-       loader.innerHTML = `
+    // Select table and container elements
+    const tableContainer = document.getElementById("pannel-table"); // Assume this is the container holding the table
+    const table = document.getElementById("categoriesTable");
+
+    // Create and show loading animation
+    const loader = document.createElement("div");
+    loader.id = "loading";
+    loader.className = "loader"; // Add a class to apply CSS animation
+    loader.innerHTML = `
            <div class="spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite;"></div>
            <p>Saving changes...</p>
        `;
-       document.body.appendChild(loader);
-   
-       // Hide the table container
-       tableContainer.style.display = "none";
+    document.body.appendChild(loader);
+
+    // Hide the table container
+    tableContainer.style.display = "none";
     try {
         const response = await fetch(`${BASE_URL}/api/v1/user/updatePannelOrder`, {
             method: "POST",
@@ -233,3 +244,33 @@ async function saveOrderToServer(updatedOrder) {
     }
 }
 fetchingPannelsfromDatabase();
+
+function filterTable() {
+    const searchInput = document.querySelector("#searchInput").value.toLowerCase(); // Get the search query
+    const rows = document.querySelectorAll("#panel-tbody tr");
+    let match = false;
+
+    rows.forEach(row => {
+
+        if (row.id === "noMatch") return;
+
+        const rowData = Array.from(row.cells)
+            .map(cell => cell.textContent.toLowerCase())
+            .join(" "); // Concatenate all cell text in a row
+
+        // Show the row if it includes the search query, otherwise hide it
+        if (rowData.includes(searchInput)) {
+            row.style.display = ""; // Show row
+            match = true;
+        } else {
+            row.style.display = "none"; // Hide row
+        }
+
+        const noMatchrow = document.getElementById("noMatch");
+        if (match) {
+            noMatchrow.style.display = "none";
+        } else {
+            noMatchrow.style.display = "";
+        }
+    });
+}

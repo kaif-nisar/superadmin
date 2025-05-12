@@ -1,16 +1,19 @@
 <html>
+
 <head>
     <title>Test Panels</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        .container{
+        .container {
             width: 95%;
             margin: 33px auto;
         }
+
         h1 {
             font-size: 32px;
             color: #333;
         }
+
         .info-box {
             background-color: #e9f0f7;
             padding: 10px;
@@ -18,11 +21,15 @@
             display: flex;
             align-items: center;
             margin-bottom: 20px;
+            justify-content: space-between;
+            letter-spacing: 1px;
         }
+
         .info-box i {
             margin-right: 10px;
             color: #5a9bd5;
         }
+
         .add-new {
             background-color: #007bff;
             color: white;
@@ -31,8 +38,8 @@
             border-radius: 5px;
             cursor: pointer;
             float: right;
-            margin: 1rem;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -40,36 +47,46 @@
             border-radius: 5px;
             overflow: hidden;
         }
-        th, td {
+
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
+
         th {
             background-color: #f5f6fa;
             color: #333;
         }
+
         td {
             color: #333;
         }
+
         .edit-link {
             color: #007bff;
             text-decoration: none;
         }
+
         .edit-link i {
             margin-right: 5px;
         }
+
         .order-icon {
             cursor: pointer;
             color: #333;
         }
+
         .actions a {
             color: #007bff;
             cursor: pointer;
         }
+
         .pannelTests {
             width: 30%;
         }
+
         /* Add smooth transition for all rows */
         tbody tr {
             transition: transform 0.2s ease, background-color 0.2s ease;
@@ -131,12 +148,15 @@
             color: #555;
             margin: 0;
         }
-        .contar1{
+
+        .contar1 {
             margin: 35px;
         }
+
         table {
             width: 100%;
         }
+
         /* Keyframes for spinning animation */
         @keyframes spin2 {
             0% {
@@ -147,17 +167,45 @@
                 transform: rotate(360deg);
             }
         }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .search-container i {
+            margin-left: 10px;
+            color: #888;
+        }
+
+        .protip i {
+            color: rgb(185, 185, 0);
+
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Test panels</h1>
         <div class="info-box">
-            <i class="fas fa-question-circle"></i>
-            <span>How to reorder?</span>
+            <span>Home>panel</span>
+            <a><button onclick="loadPage('addPanels')" class="add-new">+ Add new</button></a>
         </div>
-        <a ><button onclick="loadPage('addPanels')" class="add-new">+ Add new</button></a>
-        
+
+        <div class="search-container">
+            <input type="text" placeholder="Search in page" id="searchInput" oninput="filterTable()">
+            <i class="fas fa-search"></i>
+            <span class="protip"><i class="fas fa-lightbulb"></i> ProTip! Drag and Drop row to reorder panels.</span>
+        </div>
         <table id="pannel-table">
             <thead>
                 <tr>
@@ -170,26 +218,11 @@
                     <th>ACTIONS</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td><i class="fas fa-arrows-alt-v order-icon"></i> 1.</td>
-                    <td>Complete Blood Count (CBC)</td>
-                    <td>Haematology</td>
-                    <td>Hemoglobin, Total Leukocyte Count, Differential Leukocyte Count, Platelet...<br>(14 tests)</td>
-                    <td>Complete Blood Count (CBC), OCCU FIT 3, OCCU FIT 4, OCCU FIT 6, Pregnancy Profile - 2, Pregnancy...</td>
-                    <td><a href="#" class="edit-link"><i class="fas fa-edit"></i> Edit</a></td>
-                </tr>
-                <tr>
-                    <td><i class="fas fa-arrows-alt-v order-icon"></i> 2.</td>
-                    <td>CBC (with absolute counts)</td>
-                    <td>Haematology</td>
-                    <td>Hemoglobin, Total Leukocyte Count, Differential Leukocyte Count, Differential...<br>(15 tests)</td>
-                    <td>Anaemia Profile, ANTENATAL PROFILE (ANP), CBC (with absolute counts), OCCU FIT 1, OCCU FIT 2, PCOD...</td>
-                    <td><a href="#" class="edit-link"><i class="fas fa-edit"></i> Edit</a></td>
-                </tr>
+            <tbody id="panel-tbody">
             </tbody>
         </table>
     </div>
     <script src="testPanel.js"></script>
 </body>
+
 </html>

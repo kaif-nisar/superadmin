@@ -1,4 +1,5 @@
 (function addpannelfun() {
+    let categoryArray = [];
     // Function to initialize TinyMCE
     async function tinymcefunction() {
         return tinymce.init({
@@ -64,6 +65,7 @@
             }
 
             const data = await response.json();
+            categoryArray.push(...(data.categories));
             if (data.categories) {
                 populateCategories(data.categories);
             } else {
@@ -254,7 +256,7 @@
                 const price = document.getElementById("price").value;
                 const interpretion = tinymce.get('editorContent').getContent();
                 const final_price = document.getElementById('final-price').value;
-                const category = document.getElementById("category").value;
+                category = categoryArray.find(doc => doc.category === document.getElementById('category').value);
                 const hideInterpretation = document.getElementById('hide-interpretation').checked;
                 const hideMethodInstrument = document.getElementById('hide-method-instrument').checked;
 
@@ -290,6 +292,6 @@
     }
     document.querySelector('.cancel').addEventListener('click', function () {
         // Navigate back to the previous page
-        window.location.href = `${BASE_URL}/main.html?page=testPanels`;
+        window.location.href = `${BASE_URL}/admin.html?page=testPanels`;
     });
 })();
