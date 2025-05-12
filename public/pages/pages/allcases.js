@@ -497,14 +497,10 @@ async function allcases() {
 }
 
 async function initialization() {
-    const loader = document.querySelector(".loader-bg");
-    loader.style.display = "flex";
     try {
         await allcases();
     } catch (error) {
         console.log(error);
-    } finally {
-        loader.style.display = "none";
     }
 }
 

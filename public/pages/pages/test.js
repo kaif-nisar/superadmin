@@ -20,7 +20,7 @@ async function loadTest() {
         }
 
         const testData = await response.json();
-       
+
         await populateLoadTest(testData.tests); // Call the function to handle the test data
     }
     catch (error) {
@@ -30,23 +30,35 @@ async function loadTest() {
 
 async function loadcategory(id) {
     try {
-            const response = await fetch(`${BASE_URL}/api/v1/user/categoryById`, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id }), // Include necessary body data
-            });
-           const catdoc = await response.json();
-            return catdoc.category;
-        } catch (error) {
-            console.log(error)
-        }
+        const response = await fetch(`${BASE_URL}/api/v1/user/categoryById`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id }), // Include necessary body data
+        });
+        const catdoc = await response.json();
+        return catdoc.category;
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 async function populateLoadTest(test) {
     const tbody = document.querySelector("#tbodyid");
     tbody.innerHTML = "";
+
+    const noMatchRow = document.createElement("tr");
+    noMatchRow.id = "noMatch";
+    noMatchRow.style.display = "none";
+
+    const cell = document.createElement("td");
+    cell.setAttribute("colspan", "7");
+    cell.textContent = "No matching row";
+    cell.style.textAlign = "center";
+
+    noMatchRow.appendChild(cell);
+    tbody.appendChild(noMatchRow);
 
     // Sort the tests by the order field
     test.sort((a, b) => a.order - b.order);
@@ -55,7 +67,7 @@ async function populateLoadTest(test) {
         const row = document.createElement('tr');
         row.setAttribute('draggable', true); // Make the row draggable
         row.setAttribute('data-id', t.order); // Store the order ID for reference
-        
+
         // let catdoc = await loadcategory(t.category);
 
         row.innerHTML = `
@@ -241,8 +253,12 @@ function addEditButtonListeners() {
 function filterTable() {
     const searchInput = document.querySelector("#searchInput").value.toLowerCase(); // Get the search query
     const rows = document.querySelectorAll("#tbodyid tr");
+    let match = false;
 
     rows.forEach(row => {
+
+        if (row.id === "noMatch") return;
+
         const rowData = Array.from(row.cells)
             .map(cell => cell.textContent.toLowerCase())
             .join(" "); // Concatenate all cell text in a row
@@ -250,8 +266,16 @@ function filterTable() {
         // Show the row if it includes the search query, otherwise hide it
         if (rowData.includes(searchInput)) {
             row.style.display = ""; // Show row
+            match = true;
         } else {
             row.style.display = "none"; // Hide row
+        }
+
+        const noMatchrow = document.getElementById("noMatch");
+        if (match) {
+            noMatchrow.style.display = "none";
+        } else {
+            noMatchrow.style.display = "";
         }
     });
 }
