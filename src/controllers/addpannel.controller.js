@@ -34,6 +34,11 @@ const addpannelcontroller = asyncHandler(async (req, res) => {
     final_price,
   } = req.body;
 
+    // Check for missing fields
+  if (!pannelname || !category || !final_price) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
   const superAdmin = req.user; // get the super admin id from token
   const userRole = req.user.role; // get the user role from token
 
@@ -49,11 +54,6 @@ const addpannelcontroller = asyncHandler(async (req, res) => {
     return res
       .status(400)
       .json({ message: "Pannel already exists in database" });
-  }
-
-  // Check for missing fields
-  if (!pannelname || !category || !inputarray || !rawPrice || !sample_types || !tenantId || !userRole) {
-    return res.status(400).json({ message: "Missing required fields" });
   }
 
   const price = Number(rawPrice); // Convert the price to a number
@@ -98,8 +98,8 @@ const addpannelcontroller = asyncHandler(async (req, res) => {
   }
 
   // Send a success response
-  return res.json(
-    new ApiResponse(200, { panelCreated }, "Pannel created successfully")
+  return res.status(200).json(
+    { message: "Pannel created successfully", panelCreated, status:"success" }
   );
 });
 
@@ -142,7 +142,9 @@ const editPannelController = asyncHandler(async (req, res) => {
     hideMethodInstrument,
   } = req.body;
 
-  const priceInNumber = Number(price);
+  if (!final_price || !pannelname || !category || !price) {
+    return res.status(401).json({ message: "missing required feilds", status: "error" })
+  }
 
   const editedPannel = await addPannel.findOneAndUpdate(
     {
@@ -163,12 +165,10 @@ const editPannelController = asyncHandler(async (req, res) => {
   );
 
   if (!editedPannel) {
-    throw new ApiError(400, "unwanted error when updating test");
+    return res.status(401).json({ message: "Something went wrong, please try again", status: "error" })
   }
 
-  return res.json(
-    new ApiResponse(200, { edited: editedPannel }, "test edited successfully")
-  );
+  return res.status(200).json({ message: "panel edited successfully", status: "success", edited: editedPannel })
 });
 
 const updatePannelOrder = asyncHandler(async (req, res) => {

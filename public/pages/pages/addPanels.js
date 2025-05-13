@@ -242,6 +242,8 @@
         document.querySelector('.save').addEventListener('click', async function () {
             const namefield = document.getElementById('name');
             const errormessage = document.querySelector('.errormessage');
+            const alert = document.querySelector(".alert");
+
 
             if (namefield.value.trim().includes(",")) {
                 errormessage.style.display = "block";
@@ -251,18 +253,30 @@
             } else {
                 errormessage.style.display = "none";
             }
+            const pannelname = namefield.value.trim();
+            const price = document.getElementById("price").value;
+            const interpretion = tinymce.get('editorContent').getContent();
+            const final_price = document.getElementById('final-price').value;
+            category = categoryArray.find(doc => doc.category === document.getElementById('category').value);
+            const hideInterpretation = document.getElementById('hide-interpretation').checked;
+            const hideMethodInstrument = document.getElementById('hide-method-instrument').checked;
+
+            const uniqueInputArray = Array.from(selectedTests.keys());
+            const uniqueSampleTypesArray = Array.from(uniqueSampleTypes);
+
+            if (!uniqueSampleTypesArray.length || !uniqueInputArray.length) {
+                alert.innerHTML = `Please select atleast one Test<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-danger");
+                alert.classList.add("show");
+                setTimeout(() => {
+                    alert.classList.remove("show");
+                    alert.classList.add("fade");
+                }, 3000);
+                return;
+            }
+
             try {
-                const pannelname = namefield.value.trim();
-                const price = document.getElementById("price").value;
-                const interpretion = tinymce.get('editorContent').getContent();
-                const final_price = document.getElementById('final-price').value;
-                category = categoryArray.find(doc => doc.category === document.getElementById('category').value);
-                const hideInterpretation = document.getElementById('hide-interpretation').checked;
-                const hideMethodInstrument = document.getElementById('hide-method-instrument').checked;
-
-                const uniqueInputArray = Array.from(selectedTests.keys());
-                const uniqueSampleTypesArray = Array.from(uniqueSampleTypes);
-
                 const response = await fetch(`${BASE_URL}/api/v1/user/add-panels-tenant`, {
                     method: "POST",
                     headers: {
@@ -272,23 +286,46 @@
                 });
 
                 const data = await response.json();
-                if (!response.ok) {
-                    throw data.message;
+                if (response.ok) {
+
+                    // Clear selections after successful save
+                    selectedTests.clear();
+                    uniqueSampleTypes.clear();
+                    tagsdivaddpannel.innerHTML = ''; // Clear selected tags
+                    alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-danger");
+                    alert.classList.add("alert-success");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
+                    setTimeout(() => {
+                        // Reload the page after successful creation
+                        location.reload();
+                    }, 3500);
+                } else {
+
+                    alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-success");
+                    alert.classList.add("alert-danger");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
                 }
-
-                alert("test pannel created successfully");
-
-                selectedTests.clear();
-                uniqueSampleTypes.clear();
-                currentSampleType = null;
-                tagsdivaddpannel.innerHTML = '';
-                // Reload the page after successful creation
-                location.reload();
             } catch (error) {
-                alert(error);
-                console.log(error);
+                alert.innerHTML = `${error.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-danger");
+                alert.classList.add("show");
+                setTimeout(() => {
+                    alert.classList.remove("show");
+                    alert.classList.add("fade");
+                }, 3000);
             }
-        }, { once: true });
+        });
     }
     document.querySelector('.cancel').addEventListener('click', function () {
         // Navigate back to the previous page

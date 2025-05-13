@@ -208,22 +208,25 @@ const updateTestOrder = asyncHandler(async (req, res) => {
 
 const editTest = asyncHandler(async (req, res) => {
     const { _id, Name, final_price, Short_name, category, Price, sampleType, method, instrument, interpretation, parameters } = req.body;
-    // console.log( _id)
 
+
+    if (!Name || !final_price || !Short_name || !category || !Price || !sampleType) {
+        return res.status(401).json({message: "missing required fields", status: "error"})
+    }
     const currentTest = await testSchema.findById({
         _id
     });
-    const duplicatetest = await testSchema.findOne({
-        $or: [
-            { Name: Name },
-        ]
-    });
+    // const duplicatetest = await testSchema.findOne({
+    //     $or: [
+    //         { Name: Name },
+    //     ]
+    // });
 
-    if (duplicatetest && !(duplicatetest._id.toString() === _id)) {
-        return res.status(400).json({ message: "this Test Name is already taken" });
-    }
+    // if (duplicatetest && !(duplicatetest._id.toString() === _id)) {
+    //     return res.status(400).json({ message: "this Test Name is already taken" });
+    // }
     if (!currentTest) {
-        return res.status(401).json({ message: "something went wrong, Test not found" });
+        return res.status(401).json({ message: "something went wrong, Test not found", status:"error" });
     }
 
     const editedTest = await testSchema.findOneAndUpdate(
@@ -246,10 +249,10 @@ const editTest = asyncHandler(async (req, res) => {
     );
 
     if (!editedTest) {
-        return res.status(402).json({ message: "Something went wrong, please try again" });
+        return res.status(402).json({ message: "Something went wrong, please try again", status: "error" });
     }
 
-    return res.status(200).json({ message: "test edited successfully" });
+    return res.status(200).json({ message: "test edited successfully", status: "success" });
 });
 
 

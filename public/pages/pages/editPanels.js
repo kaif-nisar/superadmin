@@ -58,13 +58,13 @@ async function addpannelfun() {
 
     //isko dekhna hai
 
-
     async function fetchPanelData(name) {
         try {
             const response = await fetch(`${BASE_URL}/api/v1/user/one-Pannel/${name}`, { method: "POST" });
             const panelData = await response.json();
 
             if (panelData) {
+                await loadCategories();
                 populateFields(panelData);
             }
         } catch (error) {
@@ -76,7 +76,7 @@ async function addpannelfun() {
         // Populate selected tests
         populateSelectedTests(panelData);
         // Populate Category
-        populateCategory(panelData.category);
+        // populateCategory(panelData.category);
 
         // Populate other fields
         panelNameInput.value = panelData.name;
@@ -84,6 +84,7 @@ async function addpannelfun() {
         document.getElementById("final-price").value = panelData.final_price;
         document.getElementById('hide-interpretation').checked = panelData.hideInterpretation;
         document.getElementById('hide-method-instrument').checked = panelData.hideMethodInstrument;
+        document.getElementById('category').value = panelData.category.category;
         // Set the content in the TinyMCE editor
         if (tinymce.get("editorContent")) {
             tinymce.get("editorContent").setContent(panelData.interpretation);
@@ -92,41 +93,42 @@ async function addpannelfun() {
         }
     }
 
-    async function setSelectedOption(selectId, value) {
-        const selectElement = document.getElementById(selectId);
-        if (selectElement) {
-            const options = selectElement.options;
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].value === value) {
-                    options[i].selected = true; // Set the matching option as selected
-                    break;
-                }
-            }
-        }
-    }
+    // async function setSelectedOption(selectId, value) {
+    //     const selectElement = document.getElementById(selectId);
+    //     if (selectElement) {
+    //         const options = selectElement.options;
+    //         for (let i = 0; i < options.length; i++) {
+    //             if (options[i].value === value) {
+    //                 options[i].selected = true; // Set the matching option as selected
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
 
 
-    function populateCategory(existingCategory) {
-        const categorySelect = document.getElementById('category');
-        categorySelect.innerHTML = '';  // Clear any existing options
+    // function populateCategory(existingCategory) {
+    //     const categorySelect = document.getElementById('category');
+    //     categorySelect.innerHTML = '';  // Clear any existing options
 
-        const defaultOption = document.createElement('option');
-        defaultOption.textContent = 'Select Category';
-        defaultOption.disabled = true;
-        defaultOption.selected = true;
-        categorySelect.appendChild(defaultOption);
+    //     const defaultOption = document.createElement('option');
+    //     defaultOption.textContent = 'Select Category';
+    //     defaultOption.disabled = true;
+    //     defaultOption.selected = true;
+    //     categorySelect.appendChild(defaultOption);
 
-        // Fetch and populate categories
-        loadCategories(existingCategory);
-    }
+    //     // Fetch and populate categories
+    // }
 
-    async function loadCategories(existingCategory) {
+    async function loadCategories() {
         try {
             const response = await fetch(`${BASE_URL}/api/v1/user/category-list`);
             const categories = await response.json();
 
             if (categories && Array.isArray(categories.data)) {
                 const categorySelect = document.getElementById('category');
+                categorySelect.innerHTML = "";
+
                 categories.data.forEach(category => {
                     const option = document.createElement('option');
                     option.value = category.category;
@@ -135,12 +137,12 @@ async function addpannelfun() {
                 });
 
                 // Set the existing category
-                if (existingCategory) {
-                    const existingOption = [...categorySelect.options].find(option => option.value === existingCategory);
-                    if (existingOption) {
-                        existingOption.selected = true;
-                    }
-                }
+                // if (existingCategory) {
+                //     const existingOption = [...categorySelect.options].find(option => option.value === existingCategory);
+                //     if (existingOption) {
+                //         existingOption.selected = true;
+                //     }
+                // }
             }
         } catch (error) {
             console.error("Error loading categories:", error);
@@ -334,6 +336,8 @@ async function addpannelfun() {
         document.querySelector('.save').addEventListener('click', async function () {
             const namefield = document.getElementById('name');
             const errormessage = document.querySelector('.errormessage');
+            const alert = document.querySelector(".alert");
+
 
             if (namefield.value.trim().includes(",")) {
                 errormessage.style.display = "block";
@@ -357,8 +361,19 @@ async function addpannelfun() {
                 const uniqueSampleTypes = Array.from(selectedSampleTypes);
                 const uniqueInputArray = Array.from(selectedTests);
 
-                console.log(uniqueSampleTypes);
-                console.log(uniqueInputArray);
+                console.log(uniqueSampleTypes, uniqueInputArray);
+                
+                if (!uniqueSampleTypes.length || !uniqueInputArray.length) {
+                    alert.innerHTML = `Please select atleast one Test<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-success");
+                    alert.classList.add("alert-danger");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
+                    return;
+                }
 
                 const response = await fetch(`${BASE_URL}/api/v1/user/edit-Pannel/${name}`, {
                     method: "POST",
@@ -378,17 +393,46 @@ async function addpannelfun() {
                     })
                 });
 
-                if (!response.ok) throw new Error("Error editing the panel");
+                const data = await response.json();
 
-                alert("Test panel edited successfully");
-                // Clear selections after successful save
-                selectedTests.clear();
-                selectedSampleTypes.clear();
-                tagsDiv.innerHTML = ''; // Clear selected tags
-                // Reload the page after successful creation
-                location.reload();
+                if (data.status === "success") {
+
+                    // Clear selections after successful save
+                    selectedTests.clear();
+                    selectedSampleTypes.clear();
+                    tagsDiv.innerHTML = ''; // Clear selected tags
+                    alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-danger");
+                    alert.classList.add("alert-success");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
+                    setTimeout(() => {
+                        // Reload the page after successful creation
+                        location.reload();
+                    }, 3500);
+                } else {
+
+                    alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-success");
+                    alert.classList.add("alert-danger");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
+                }
             } catch (error) {
-                console.error("Error editing panel:", error);
+                alert.innerHTML = `${error.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-danger");
+                alert.classList.add("show");
+                setTimeout(() => {
+                    alert.classList.remove("show");
+                    alert.classList.add("fade");
+                }, 3000);
             }
         });
     }

@@ -392,7 +392,6 @@
         });
 
         const alert = document.querySelector(".alert");
-        const contentBox = document.getElementById("content-box");
         // Use the previously declared cookies variable
         fetch(`${BASE_URL}/api/v1/user/make-test-tenant`, {
             method: 'POST',
@@ -500,6 +499,7 @@ function deleteRow(element) {
         element.parentElement.remove();
     }
 }
+
 
 function toggleForm(selectElement) {
     const closestContainer = selectElement.closest('.normalValue'); // Closest container element

@@ -1,6 +1,7 @@
 (async function fetchData() {
     // Declare the units variable globally
     //let units = [];
+    let categoryArray = [];
     function loadUnits() {
         console.log('loadUnits')
         fetch(`${BASE_URL}/api/v1/user/get-units`)
@@ -15,7 +16,7 @@
     }
     loadUnits();
 
-        async function fetchandpopulatesamples() {
+    async function fetchandpopulatesamples() {
         const selecttag = document.getElementById("sampleType");
         selecttag.innerHTML = "";
 
@@ -38,7 +39,7 @@
 
     fetchandpopulatesamples();
 
-     document.getElementById("sampleaddbtn").addEventListener("click", async () => {
+    document.getElementById("sampleaddbtn").addEventListener("click", async () => {
         const sampeName = document.getElementById("sample-name").value;
         const samplebyuser = JSON.parse(localStorage.getItem("superAdminData"));
         const alert = document.getElementById("alert");
@@ -85,7 +86,7 @@
     let orderId = 1;
     // // Function to initialize TinyMCE
     async function tinymcefunction() {
-        return  tinymce.init({
+        return tinymce.init({
             selector: '#editorContent',
             height: 300,
             menubar: false,
@@ -93,30 +94,30 @@
             toolbar: 'undo redo | formatselect | fontsizeselect | bold italic backcolor | image | table | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | link',
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
             fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt',
-        
+
             // ✅ Custom Image Upload Handler
             images_upload_handler: function (blobInfo, success, failure) {
                 var formData = new FormData();
                 formData.append('image', blobInfo.blob(), blobInfo.filename());  // ✅ Fix: Correct field name
-        
+
                 fetch('http://localhost:8000/api/v1/user/imageUploaderfunction', {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.location) {
-                        success(data.location);
-                    } else {
-                        failure("❌ Image upload failed");
-                    }
-                })
-                .catch(error => {
-                    console.error("❌ Upload failed:", error);
-                    failure("❌ Upload error: " + error.message);
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.location) {
+                            success(data.location);
+                        } else {
+                            failure("❌ Image upload failed");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("❌ Upload failed:", error);
+                        failure("❌ Upload error: " + error.message);
+                    });
             }
-        }); 
+        });
     }
 
     await tinymcefunction();
@@ -137,7 +138,7 @@
     let data = await response.json()
     data = data.data
 
-    if(data.isDocumentedTest) {
+    if (data.isDocumentedTest) {
         document.querySelector('.parameters-section').style.display = "none";
         document.querySelector('#defaultresult').style.display = "block";
         document.querySelector('#interpretation').style.display = "none";
@@ -146,6 +147,7 @@
     await populateForm(data);
 
     async function populateForm(data) {
+        console.log(data)
         document.getElementById('name').value = data.Name || '';
         document.getElementById('short-name').value = data.Short_name || '';
         document.getElementById('price').value = data.Price || '';
@@ -175,8 +177,8 @@
         // Add the preselected category if it exists
         if (data.category) {
             const preselectedOption = document.createElement('option');
-            preselectedOption.value = data.category;
-            preselectedOption.textContent = data.category;
+            preselectedOption.value = data.category.category;
+            preselectedOption.textContent = data.category.category;
             preselectedOption.selected = true;
             categorySelect.appendChild(preselectedOption);
         }
@@ -303,6 +305,8 @@
         fetch(`${BASE_URL}/api/v1/user/category-list`)  // Fetch categories from your backend
             .then(response => response.json())
             .then(data => {
+                categoryArray.push(...(data.data));
+
                 const categorySelect = document.getElementById('category');
 
                 // Check if the API call was successful and we have data
@@ -526,7 +530,7 @@
         const formData = {
             Name: namefield.value.trim(),
             Short_name: document.getElementById('short-name').value,
-            category: document.getElementById('category').value,
+            category: categoryArray.find(doc => doc.category === document.getElementById('category').value),
             Price: document.getElementById('price').value,
             final_price: document.getElementById('final-price').value,
             sampleType: document.getElementById('sampleType').value,
@@ -581,6 +585,7 @@
             formData.parameters.push(parameterData);
         });
 
+        const alert = document.querySelector(".alert");
 
         // Use the previously declared cookies variable
         let _id = name
@@ -596,12 +601,42 @@
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                alert('test edited successfully!');
+                console.log(data.status);
+                
+                  if (data.status === "success") {
+
+                    alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-danger");
+                    alert.classList.add("alert-success");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3500);
+                } else {
+
+                    alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-success");
+                    alert.classList.add("alert-danger");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
+                }
             })
             .catch((error) => {
-                console.error('Error:', error);
-                alert('Error submitting form.');
+                 alert.innerHTML = `${error.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-danger");
+                alert.classList.add("show");
+                setTimeout(() => {
+                    alert.classList.remove("show");
+                    alert.classList.add("fade");
+                }, 3000);
             });
     });
 
