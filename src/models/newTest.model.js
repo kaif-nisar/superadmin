@@ -48,15 +48,6 @@ const TestSchema = new Schema(
     parameters: [parameterSchema],
     sampleType: {
       type: String,
-      enum: [
-        "SERUM",
-        "EDTA",
-        "FLOURISHED",
-        "URINE",
-        "Sodium Citrate",
-        "Sodium Heparin",
-        "Lithium Heparin",
-      ],
       required: true,
     },
     method: String,
@@ -71,10 +62,10 @@ const TestSchema = new Schema(
     tenantId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      // required: function () {
-      //   // Sirf SuperAdmin ke liye optional hai
-      //   return this.createdByRole !== "superAdmin";
-      // },
+      required: function () {
+        // Sirf SuperAdmin ke liye optional hai
+        return this.createdByRole !== "superAdmin";
+      },
       default: null, // Default to null for SuperAdmin tests
       index: true, // For faster queries by tenant
     },

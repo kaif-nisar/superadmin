@@ -10,16 +10,12 @@
 
         h1 {
             font-size: 2em;
-            margin-bottom: 10px;
+            margin: 0px;
         }
 
         p {
             font-size: 0.9em;
             color: #555;
-        }
-
-        .filter-container {
-            margin: 20px 0;
         }
 
         .filter-container button {
@@ -164,7 +160,7 @@
         }
 
         #tableContainer {
-            max-height: 50vh;
+            max-height: 55vh;
             overflow: auto;
             border: 1px solid #c0c0c0;
         }
@@ -187,24 +183,43 @@
                 transform: rotate(360deg);
             }
         }
+
+        .testheaderDiv {
+            padding: 12px;
+            border-radius: 5px;
+            margin: 2rem 0rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #e2e2e2;
+        }
+
+        .testheaderDiv div {
+            display: flex;
+            gap: 10px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container202">
-        <h1>Test database</h1>
-        <a onclick>
-            <div class="filter-container">
-                <button onclick="loadPage('addTest')" class="add-new">+ Add new</button>
-            </div>
-        </a>
+        <div class="testheaderDiv">
+            <h1>Test database</h1>
+            <div>
+                <a onclick>
+                    <div class="filter-container">
+                        <button onclick="loadPage('addTest')" class="add-new">+ Add Test</button>
+                    </div>
+                </a>
 
-        <a onclick>
-            <div class="filter-container">
-                <button title="Add Test as Document" onclick="loadPage('addTestDocument')" class="add-new">+ Add
-                    Document</button>
+                <a onclick>
+                    <div class="filter-container">
+                        <button title="Add Test as Document" onclick="loadPage('addTestDocument')" class="add-new">+ Add
+                            Document</button>
+                    </div>
+                </a>
             </div>
-        </a>
+        </div>
 
         <div class="filter-container">
         </div>

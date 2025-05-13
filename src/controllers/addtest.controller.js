@@ -36,17 +36,31 @@ const addingTest = asyncHandler(async (req, res) => {
 
     const { Name, final_price, Short_name, category, Price, sampleType, method, instrument, parameters, interpretation, isDocumentedTest, user } = req.body;
     // const superAdmin = req.user.id // get the super admin id from token 
+
+    if (!Name || !category || !final_price || !Short_name || !Price || !sampleType) {
+        return res.status(400).json({ message: "Missing required fields" })
+    }
+
     // checking if test is allready in database
     const allreadyExistedTest = await testSchema.findOne(
         { Name: Name }
     )
 
-    if (!Name || !category || !final_price || !Short_name || !Price || !sampleType) {
-        return res.status(400).json({ message: "Missing required fields" })
+    if (allreadyExistedTest) {
+        return res.status(400).json({ message: "This test is already Exists" });
     }
-    
+
     // Get the next order number
     const nextOrder = await getNextSequenceValue("orderCounter");
+
+    let tenantId = null;
+    let isbasetest = false;
+
+    // Set flags based on user role
+    if (req.user.role !== "superAdmin") {
+        isbasetest = true; // allow admin/franchise to mark base test
+        tenantId = req.user.tenantId?._id?.toString(); // safe optional chaining
+    }
 
     const testCreated = await testSchema.create({
         Name,
@@ -63,8 +77,9 @@ const addingTest = asyncHandler(async (req, res) => {
         final_price,
         createdBy: userId || "", // add the super admin id to the test
         originalTestId: null,
-        isBaseTest: true,
+        isBaseTest: isbasetest,
         purchasedFromBaseTest: false,
+        tenantId: tenantId,
     })
     if (!testCreated) {
         return res.status(200).json({ message: "Failed to create test" })
@@ -77,11 +92,11 @@ const addingTest = asyncHandler(async (req, res) => {
 
 })
 
-const addsample = async (req,res) => {
-    const {Name, user} = req.body;
+const addsample = async (req, res) => {
+    const { Name, user } = req.body;
 
-    if(!Name) {
-        return res.status(400).json({message: "! please enter Name"})
+    if (!Name) {
+        return res.status(400).json({ message: "! please enter Name" })
     }
 
     const duplicate = await sampleSchema.findOne({
@@ -89,7 +104,7 @@ const addsample = async (req,res) => {
     })
 
     if (duplicate) {
-        return res.status(400).json({message: "! This sampletype is already present"})
+        return res.status(400).json({ message: "! This sampletype is already present" })
     }
 
     const createddoc = await sampleSchema.create({
@@ -98,21 +113,21 @@ const addsample = async (req,res) => {
     })
 
     if (!createddoc) {
-        return res.status(401).json({message: "! Something went wrong, please try again"})
+        return res.status(401).json({ message: "! Something went wrong, please try again" })
     }
 
-    return res.status(200).json({message: "sample added successfully"});
+    return res.status(200).json({ message: "sample added successfully" });
 
 }
-const fetchsample = async (req,res) => {
+const fetchsample = async (req, res) => {
 
     const samples = await sampleSchema.find({})
 
     if (!samples) {
-        return res.status(500).json({message: "! No samples found"})
+        return res.status(500).json({ message: "! No samples found" })
     }
 
-    return res.status(200).json({message: "sample added successfully", data: samples});
+    return res.status(200).json({ message: "sample added successfully", data: samples });
 }
 
 const updateTestInterpretation = asyncHandler(async (req, res) => {
@@ -199,16 +214,16 @@ const editTest = asyncHandler(async (req, res) => {
         _id
     });
     const duplicatetest = await testSchema.findOne({
-       $or: [
-        {Name: Name},
-       ]
+        $or: [
+            { Name: Name },
+        ]
     });
-    
+
     if (duplicatetest && !(duplicatetest._id.toString() === _id)) {
-       return res.status(400).json({message:"this Test Name is already taken"});
+        return res.status(400).json({ message: "this Test Name is already taken" });
     }
     if (!currentTest) {
-       return res.status(401).json({message:"something went wrong, Test not found"});
+        return res.status(401).json({ message: "something went wrong, Test not found" });
     }
 
     const editedTest = await testSchema.findOneAndUpdate(
@@ -231,10 +246,10 @@ const editTest = asyncHandler(async (req, res) => {
     );
 
     if (!editedTest) {
-        return res.status(402).json({message:"Something went wrong, please try again"});
+        return res.status(402).json({ message: "Something went wrong, please try again" });
     }
 
-    return res.status(200).json({message:"test edited successfully"});
+    return res.status(200).json({ message: "test edited successfully" });
 });
 
 
@@ -262,11 +277,11 @@ const testCate = asyncHandler(async (req, res) => {
     });
 
     if (fetchedcategory) {
-        return res.json({ message: `'${catName}' allready present`, type:"error" });
+        return res.json({ message: `'${catName}' allready present`, type: "error" });
     }
 
     if (!catName && typeof catName !== "string") {
-        return res.json({ message: "please enter category Name", type:"auth" });
+        return res.json({ message: "please enter category Name", type: "auth" });
     }
 
     const incremented = await Counter.findOneAndUpdate(
@@ -278,7 +293,7 @@ const testCate = asyncHandler(async (req, res) => {
     console.log(incremented)
 
     if (!incremented) {
-        return res.json({ message: "Invalid orderId, please try again", type:"error" });
+        return res.json({ message: "Invalid orderId, please try again", type: "error" });
     }
 
     const newCategory = await categorydb.create({
@@ -287,10 +302,10 @@ const testCate = asyncHandler(async (req, res) => {
     })
 
     if (!newCategory) {
-        return res.json({ message: "Connection error, please check your internet connection", type:"error" });
+        return res.json({ message: "Connection error, please check your internet connection", type: "error" });
     }
 
-    return res.json({ message: "category added successfully", type:"success" });
+    return res.json({ message: "category added successfully", type: "success" });
 
 })
 
@@ -343,7 +358,7 @@ const updateTestCate = asyncHandler(async (req, res) => {
             type: "error"
         });
     }
-    return res.json({message: `edited successfully`, type: "success"});
+    return res.json({ message: `edited successfully`, type: "success" });
 })
 
 //for test category edit
@@ -471,43 +486,44 @@ const updateTestcontroller = asyncHandler(async (req, res) => {
 
 })
 const addUnit = asyncHandler(async (req, res) => {
-  const { unit } = req.body;
-  const unitExists = await unitdb.findOne({ unit });
-  if (unitExists) {
-    throw new ApiError("Unit already exists");
-  }
-  const newUnit = new unitdb({ unit });
-  await newUnit.save();
+    const { unit } = req.body;
+    const unitExists = await unitdb.findOne({ unit });
+    if (unitExists) {
+        throw new ApiError("Unit already exists");
+    }
+    const newUnit = new unitdb({ unit });
+    await newUnit.save();
 
-  return res.status(201).json({ unit: newUnit.unit });
+    return res.status(201).json({ unit: newUnit.unit });
 });
 
 const getUnits = asyncHandler(async (req, res) => {
-  const units = await unitdb.find().sort({ unit: 1 });
+    const units = await unitdb.find().sort({ unit: 1 });
 
-  return res.status(200).json({ units });
+    return res.status(200).json({ units });
 });
 const tenantTest = asyncHandler(async (req, res) => {
-  const tenantId = req.user._id; // Assuming tenant is logged in
-  const createdBy = req.user._id;
+    const tenantId = req.user.tenantId._id; // Assuming tenant is logged in
+    const createdBy = req.user._id;
 
-  try {
-    const tests = await testSchema.find({
-      tenantId: tenantId,
-      createdBy: createdBy,
-    });
+    console.log(tenantId,createdBy);
+    try {
+        const tests = await testSchema.find({
+            tenantId: tenantId,
+            createdBy: createdBy,
+        });
 
-    res.status(200).json({
-      status: 200,
-      message: "Tests fetched successfully",
-      count: tests.length,
-      tests,
-    });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Failed to fetch tests", error: error.message });
-  }
+        return res.status(200).json({
+            status: 200,
+            message: "Tests fetched successfully",
+            count: tests.length,
+            tests,
+        });
+    } catch (error) {
+        return res
+            .status(500)
+            .json({ message: "Failed to fetch tests", error: error.message });
+    }
 });
 export {
     addingTest,
