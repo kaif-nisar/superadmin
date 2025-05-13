@@ -24,13 +24,15 @@ const getNextSequenceValue = async (counterName) => {
 
 
 const addingTest = asyncHandler(async (req, res) => {
-
+    console.log("addtest called")
     // trim all values in req.body
     Object.entries(req.body).forEach(([key, value]) => {
         if (typeof value === "string") {
             req.body[key] = value.trim()
         }
     })
+
+    const userId = req.user._id;
 
     const { Name, final_price, Short_name, category, Price, sampleType, method, instrument, parameters, interpretation, isDocumentedTest, user } = req.body;
     // const superAdmin = req.user.id // get the super admin id from token 
@@ -39,10 +41,10 @@ const addingTest = asyncHandler(async (req, res) => {
         { Name: Name }
     )
 
-    if (allreadyExistedTest) {
-        return res.status(400).json({ message: "Test was already present in database" })
+    if (!Name || !category || !final_price || !Short_name || !Price || !sampleType) {
+        return res.status(400).json({ message: "Missing required fields" })
     }
-
+    
     // Get the next order number
     const nextOrder = await getNextSequenceValue("orderCounter");
 
@@ -59,7 +61,7 @@ const addingTest = asyncHandler(async (req, res) => {
         order: nextOrder,
         isDocumentedTest: isDocumentedTest,
         final_price,
-        createdBy: user._id, // add the super admin id to the test
+        createdBy: userId || "", // add the super admin id to the test
         originalTestId: null,
         isBaseTest: true,
         purchasedFromBaseTest: false,

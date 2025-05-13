@@ -76,7 +76,7 @@ async function populateLoadTest(test) {
             <td>${t.Price}</td>
             <td>${t.sampleType}</td>
             <td>${t.Short_name}</td>
-            <td>${t.category}</td>
+            <td>${t.category.category}</td>
             <td class="actions">
                 <a href="#" onclick="loadPage('editTest', '${t._id}')"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
             </td>`;

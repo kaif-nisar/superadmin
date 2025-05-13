@@ -11,7 +11,7 @@ const pannelSchema = new Schema(
       required: true,
     },
     category: {
-      type: String,
+      type: Object,
     },
     tenantId: {
       type: mongoose.Schema.Types.ObjectId,

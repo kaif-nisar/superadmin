@@ -4,7 +4,7 @@ async function loadTest() {
     try {
         // Retrieve the access token from cookies
 
-        const response = await fetch(`${BASE_URL}/api/v1/user/test-database-tenant`, {
+        const response = await fetch(`${BASE_URL}/api/v1/user/test-database`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

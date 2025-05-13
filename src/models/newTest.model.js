@@ -35,7 +35,7 @@ const TestSchema = new Schema(
       type: String,
     },
     category: {
-      type: String,
+      type: Object,
     },
     Price: {
       type: Number,
@@ -71,10 +71,10 @@ const TestSchema = new Schema(
     tenantId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: function () {
-        // Sirf SuperAdmin ke liye optional hai
-        return this.createdByRole !== "superAdmin";
-      },
+      // required: function () {
+      //   // Sirf SuperAdmin ke liye optional hai
+      //   return this.createdByRole !== "superAdmin";
+      // },
       default: null, // Default to null for SuperAdmin tests
       index: true, // For faster queries by tenant
     },

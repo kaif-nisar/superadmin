@@ -392,9 +392,9 @@
         });
 
         const alert = document.querySelector(".alert");
-        const contentBox = document.getElementById("main-content");
+        const contentBox = document.getElementById("content-box");
         // Use the previously declared cookies variable
-        fetch(`${BASE_URL}/api/v1/user/make-test`, {
+        fetch(`${BASE_URL}/api/v1/user/make-test-tenant`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -406,10 +406,6 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    contentBox.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
 
                     alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
                     alert.classList.remove("alert-danger");
@@ -423,10 +419,6 @@
                         location.reload();
                     }, 3500);
                 } else {
-                    contentBox.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
 
                     alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
                     alert.classList.remove("alert-success");
@@ -439,12 +431,8 @@
                 }
             })
             .catch((error) => {
-                contentBox.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                  });
                   
-                alert.innerHTML = `${error}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                alert.innerHTML = `${error.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
                 alert.classList.remove("alert-success");
                 alert.classList.add("alert-danger");
                 alert.classList.add("show");

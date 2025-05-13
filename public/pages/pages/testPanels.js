@@ -45,7 +45,6 @@
 
 
 async function fetchingPannelsfromDatabase() {
-    console.log("lodfjdhfdhfjk")
 
     try {
         const response = await fetch(`${BASE_URL}/api/v1/user/all-pannels-tenant`, { method: "POST" });
@@ -63,23 +62,8 @@ async function fetchingPannelsfromDatabase() {
     }
 }
 
-// async function loadcategory(id) {
-//     try {
-//         const response = await fetch(`${BASE_URL}/api/v1/user/categoryById`, {
-//             method: "POST",
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({ id }),
-//         });
-//         const catdoc = await response.json();
-//         return catdoc.category;
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
 async function populatePannelsTable(pannels) {
+    console.log(pannels)
     const tbody = document.querySelector("#pannel-table tbody");
     tbody.innerHTML = "";
 
@@ -107,7 +91,7 @@ async function populatePannelsTable(pannels) {
         row.innerHTML = `
             <td class="order"><i class="fa-solid fa-up-down"></i>${pannel.order}</td>
             <td>${pannel.name}</td>
-            <td>${pannel.category}</td>
+            <td>${pannel.category.category}</td>
             <td>${pannel.price}</td>
             <td class="pannelTests">${pannel.tests}</td>
             <td>${pannel.sample_types}</td>
@@ -120,9 +104,6 @@ async function populatePannelsTable(pannels) {
 
     // Add drag-and-drop functionality
     addDragAndDropListeners();
-
-    // Add event listeners for edit buttons
-    addEditButtonListeners();
 }
 
 function addDragAndDropListeners() {

@@ -94,11 +94,11 @@
 
     async function loadTests() {
         try {
-            const response = await fetch(`${BASE_URL}/api/v1/user/test-database`, { method: "POST" });
-            const tests = await response.json();
+            const response = await fetch(`${BASE_URL}/api/v1/user/test-database-tenant`, { method: "POST" });
+            const testData = await response.json();
 
             testList.innerHTML = '';
-            tests.forEach(test => {
+            testData.tests.forEach(test => {
                 const testElement = document.createElement('div');
                 testElement.id = "tests-name-div";
                 testElement.setAttribute('sampletype', test.sampleType);

@@ -258,7 +258,7 @@ router.route('/edit-Package/:value1').post(editPackageController);
 // // add Test Package
 router.route('/add-panels').post(verifySuperAdmin,addpannelcontroller)
 router.route('/add-panels-tenant').post(verifyJWT,addpannelcontroller)
-router.route('/all-pannels').post(allPannelcontroller)
+router.route('/all-pannels').post(verifySuperAdmin,allPannelcontroller)
 router.route('/all-pannels-tenant').post(verifyJWT,tenantAllPanel)
 
 // booking related routes

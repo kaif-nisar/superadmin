@@ -1,7 +1,7 @@
 async function fetchingPannelsfromDatabase() {
 
     try {
-        const response = await fetch(`${BASE_URL}/api/v1/user/all-pannels-tenant`, { method: "POST" });
+        const response = await fetch(`${BASE_URL}/api/v1/user/all-pannels`, { method: "POST" });
 
         if (!response.ok) {
             throw new Error("Something went wrong while fetching details");

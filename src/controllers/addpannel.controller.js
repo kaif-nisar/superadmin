@@ -52,7 +52,7 @@ const addpannelcontroller = asyncHandler(async (req, res) => {
   }
 
   // Check for missing fields
-  if (!pannelname || !category || !inputarray || !rawPrice || !sample_types) {
+  if (!pannelname || !category || !inputarray || !rawPrice || !sample_types || !tenantId || !userRole) {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
@@ -223,9 +223,8 @@ const updatePannelOrder = asyncHandler(async (req, res) => {
 });
 
 const tenantAllPanel = asyncHandler(async (req, res) => {
-  const tenantId = req.user._id; // Assuming tenant is logged in
+  const tenantId = req.user.tenantId; // Assuming tenant is logged in
   const createdBy = req.user._id;
-
   try {
     const panels = await addPannel.find({
       tenantId: tenantId,
