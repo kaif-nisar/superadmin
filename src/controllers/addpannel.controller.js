@@ -223,7 +223,7 @@ const updatePannelOrder = asyncHandler(async (req, res) => {
 });
 
 const tenantAllPanel = asyncHandler(async (req, res) => {
-  const tenantId = req.user.tenantId; // Assuming tenant is logged in
+  const tenantId = req.user.tenantId._id; // Assuming tenant is logged in
   const createdBy = req.user._id;
   try {
     const panels = await addPannel.find({

@@ -16,7 +16,8 @@ import {
     // getTenantStatistics,
     // getDashboardStats
 } from "../controllers/superAdmin.controller.js";
-import {  addpannelcontroller, allPannelcontroller,onePannelcontroller, editPannelController, updatePannelOrder,tenantAllPanel } from "../controllers/addpannel.controller.js";
+import {  addpannelcontroller, allPannelcontroller,onePannelcontroller, 
+    editPannelController, updatePannelOrder,tenantAllPanel } from "../controllers/addpannel.controller.js";
 import { addPackagecontroller,allPackagecontroller,onePackagecontroller,editPackageController,tenantAllPackage } from "../controllers/Package.controller.js";
 import {  getOneTest,addingTest,editTest,allTest,testCate,editTestCate,editdefaultresult,
     getAllTestCate,getOneTestCate,updateTestCate,

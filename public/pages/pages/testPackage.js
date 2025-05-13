@@ -36,6 +36,18 @@ function printpackagesInTable(allpackages) {
     pannelTableBody.innerHTML = '';
     let orderId = 0;
 
+    const noMatchRow = document.createElement("tr");
+    noMatchRow.id = "noMatch";
+    noMatchRow.style.display = "none";
+
+    const cell = document.createElement("td");
+    cell.setAttribute("colspan", "7");
+    cell.textContent = "No matching row";
+    cell.style.textAlign = "center";
+
+    noMatchRow.appendChild(cell);
+    pannelTableBody.appendChild(noMatchRow);
+
     allpackages.forEach(package => {
         const row = document.createElement('tr');
         orderId++;
@@ -55,3 +67,33 @@ function printpackagesInTable(allpackages) {
 };
 
 fetchingpackagesfromDatabase();
+
+function filterTable() {
+    const searchInput = document.querySelector("#searchInput").value.toLowerCase(); // Get the search query
+    const rows = document.querySelectorAll("#packagetbody tr");
+    let match = false;
+
+    rows.forEach(row => {
+
+        if (row.id === "noMatch") return;
+
+        const rowData = Array.from(row.cells)
+            .map(cell => cell.textContent.toLowerCase())
+            .join(" "); // Concatenate all cell text in a row
+
+        // Show the row if it includes the search query, otherwise hide it
+        if (rowData.includes(searchInput)) {
+            row.style.display = ""; // Show row
+            match = true;
+        } else {
+            row.style.display = "none"; // Hide row
+        }
+
+        const noMatchrow = document.getElementById("noMatch");
+        if (match) {
+            noMatchrow.style.display = "none";
+        } else {
+            noMatchrow.style.display = "";
+        }
+    });
+}

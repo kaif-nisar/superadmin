@@ -15,9 +15,19 @@ const addPackagecontroller = asyncHandler(async (req, res) => {
     packagegender,
   } = req.body;
 
+  // Check for missing fields
+  if (
+    !pannelname ||
+    !pannelSample ||
+    !packageName ||
+    !packageFee ||
+    !packagegender
+  ) {
+    throw new ApiError(500, "All fields are required");
+  }
+
   const superAdmin = req.user; // get the super admin id from token
   const userRole = req.user.role; // get the user role from token
-  console.log(superAdmin)
   //  // checking if test is allready in database
   const tenantId = req.user.role === "superAdmin" ? null : req.user.tenantId?._id?.toString(); // safe optional chaining
 
@@ -28,17 +38,6 @@ const addPackagecontroller = asyncHandler(async (req, res) => {
 
   if (allreadyExistedpackage) {
     throw new ApiError(400, "Test was already present in database");
-  }
-
-  // Check for missing fields
-  if (
-    !pannelname ||
-    !pannelSample ||
-    !packageName ||
-    !packageFee ||
-    !packagegender
-  ) {
-    throw new ApiError(500, "All fields are required");
   }
 
   // Create the pannel in the database
@@ -56,7 +55,7 @@ const addPackagecontroller = asyncHandler(async (req, res) => {
     isBaseTest: true, // Set to true if this is a base test
     createdByRole: userRole, // Add the role of the user creating the test
     purchasedFromBaseTest: false,
-    tenantId: null, // Set tenantId to null for SuperAdmin tests
+    tenantId: tenantId || null, // Set tenantId to null for SuperAdmin tests
   };
   // Set flags based on user role
   if (req.user.role === "superAdmin") {
@@ -155,7 +154,7 @@ const editPackageController = asyncHandler(async (req, res) => {
 });
 
 const tenantAllPackage = asyncHandler(async (req, res) => {
-  const tenantId = req.user._id; // Assuming tenant is logged in
+  const tenantId = req.user.tenantId._id; // Assuming tenant is logged in
   const createdBy = req.user._id;
 
   try {

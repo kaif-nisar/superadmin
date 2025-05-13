@@ -225,9 +225,11 @@
             color: black;
         }
 
-        .hint-option, .hint-option2  {
+        .hint-option,
+        .hint-option2 {
             padding: 0.5rem 1rem;
         }
+
         #search-hint2 {
             border: 1px solid #ccc;
             max-height: 150px;
@@ -437,7 +439,8 @@
             background-color: #00d0ff;
         }
 
-        .selected-div, .selected-div2 {
+        .selected-div,
+        .selected-div2 {
             width: fit-content;
             height: 1rem;
             padding: 0.75rem 0.5rem;
@@ -452,35 +455,50 @@
             padding-left: 0.75rem;
         }
 
-        .middle-tag-div, .middle-tag-div2 {
+        .middle-tag-div,
+        .middle-tag-div2 {
             display: grid;
             grid-template-columns: auto auto auto auto auto auto auto;
         }
 
-        #noTestMessage, #noTestMessage2 {
+        #noTestMessage,
+        #noTestMessage2 {
             text-align: center;
             font-size: 1.25rem;
             border: 1px solid black;
             padding: 0.5rem 0rem;
         }
-        .hint-option, .hint-option2 {
+
+        .hint-option,
+        .hint-option2 {
             font-size: 1.25rem;
         }
+
         .errormessage {
             display: none;
             color: #B00020;
             padding: 5px;
         }
+
+        .alert {
+            position: fixed;
+            width: 75%;
+            top: 80px;
+            right: 2%;
+            z-index: 1050;
+        }
     </style>
 </head>
 
 <body>
+    <div class="alert" role="alert"></div>
+
+    <h1>Create package</h1>
     <div class="breadcrumb">
-        <a href="#">Test Packages</a>
+        <a href="#">Packages</a>
         <span>&gt;</span>
-        <span>Add new</span>
+        <span>Create Package</span>
     </div>
-    <h1>Add new test package</h1>
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" id="name" name="name">

@@ -100,7 +100,7 @@ function addpackage() {
     // Panel loading function
     async function loadpannels() {
         try {
-            const response = await fetch(`${BASE_URL}/api/v1/user/all-pannels`, { method: "POST" });
+            const response = await fetch(`${BASE_URL}/api/v1/user/all-pannels-tenant`, { method: "POST" });
             const tests = await response.json();
 
             const searchHint2 = document.getElementById('search-hint2');
@@ -110,7 +110,7 @@ function addpackage() {
             // Clear previous options
             searchHint2.innerHTML = '';
 
-            tests.forEach(test => {
+            tests.panels.forEach(test => {
                 const optionElement = document.createElement('div');
                 optionElement.className = "hint-option2";
                 optionElement.setAttribute('sample-type', JSON.stringify(test.sample_types)); // Store sample types as JSON
