@@ -374,16 +374,7 @@
                     lowerValue: row.querySelector('.lower-value').value,
                     upperValue: row.querySelector('.upper-value').value,
                 }));
-                console.log("this is the dataObject: ", dataObject);
 
-                // // Gather data from dynamic rows if type is "numeric"
-                // parameterData.gender = row.cells[5].querySelector('.sex').value
-                // parameterData.minAge = row.cells[5].querySelector('.min-age').value
-                // parameterData.minAgeUnit = row.cells[5].querySelector('[name="min_age_unit"]').value
-                // parameterData.maxAge = row.cells[5].querySelector('.max-age').value
-                // parameterData.maxAgeUnit = row.cells[5].querySelector('[name="max_age_unit"]').value
-                // parameterData.lowerValue = row.cells[5].querySelector('.lower-value').value
-                // parameterData.upperValue = row.cells[5].querySelector('.upper-value').value
             }
             parameterData.NormalValue = dataObject;
             parameterData.ValueType = selectType;

@@ -1,4 +1,6 @@
 (async function fetchAndPopulateCategories() {
+    let categoryArray = [];
+
     // Function to initialize TinyMCE
     async function tinymcefunction() {
         return tinymce.init({
@@ -32,7 +34,10 @@
         }
 
         const data = await response.json();
+
         if (data.categories) {
+            categoryArray.push(...(data.categories));
+
             populateCategories(data.categories);
         } else {
             console.error("No categories found");
@@ -41,51 +46,105 @@
         console.error("Error fetching categories:", error);
         alert("Error fetching categories. Please try again.");
     }
-})();
 
-function populateCategories(categories) {
-    const selectElement = document.getElementById("category"); // Target the <select> element
-    selectElement.innerHTML = ""; // Clear existing options
+        async function fetchandpopulatesamples() {
+        const selecttag = document.getElementById("sampleType");
+        selecttag.innerHTML = "";
 
-    // Populate categories as options
-    categories.forEach((category) => {
-        const option = document.createElement("option");
-        option.textContent = category.category; // Use category name from the fetched data
-        option.value = category._id; // Set value (use id if available, otherwise name)
-        selectElement.appendChild(option);
-    });
-}
+        try {
+            const response = await fetch(`${BASE_URL}/api/v1/user/fetchsample`);
+            const data = await response.json();
 
-document.getElementById('submitbBtn').addEventListener('click', function () {
+            if (!response.ok) {
+                return console.log(data.message);
+            }
 
-    const formData = {
-        Name: document.getElementById('name').value,
-        Short_name: document.getElementById('short-name').value,
-        final_price: document.getElementById('final_price').value,
-        category: document.getElementById('category').value,
-        Price: document.getElementById('price').value,
-        sampleType: document.getElementById('sampleType').value,
-        isDocumentedTest: true,
-        interpretation: tinymce.get('editorContent').getContent(),
+            data.data.forEach(obj => {
+                selecttag.innerHTML += `<option value="${obj.Name}">${obj.Name}</option>`;
+            });
+
+        } catch (error) {
+            alert(error)
+        }
     }
 
-    // Use the previously declared cookies variable
-    fetch(`${BASE_URL}/api/v1/user/make-test`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        // body: JSON.stringify({ ...formData, cookies }), // Use cookies variable here
-        body: JSON.stringify({ ...formData })
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            alert('test created successfully!');
-            location.reload();
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('Error submitting form.');
+    fetchandpopulatesamples();
+
+    function populateCategories(categories) {
+        const selectElement = document.getElementById("category"); // Target the <select> element
+        selectElement.innerHTML = ""; // Clear existing options
+
+        // Populate categories as options
+        categories.forEach((category) => {
+            const option = document.createElement("option");
+            option.textContent = category.category; // Use category name from the fetched data
+            option.value = category.category; // Set value (use id if available, otherwise name)
+            selectElement.appendChild(option);
         });
-});
+    }
+
+    document.getElementById('submitbBtn').addEventListener('click', function () {
+
+        const alert = document.querySelector(".alert");
+        const formData = {
+            Name: document.getElementById('name').value,
+            Short_name: document.getElementById('short-name').value,
+            final_price: document.getElementById('final_price').value,
+            category: categoryArray.find(doc => doc.category === document.getElementById('category').value),
+            Price: document.getElementById('price').value,
+            sampleType: document.getElementById('sampleType').value,
+            isDocumentedTest: true,
+            interpretation: tinymce.get('editorContent').getContent(),
+        }
+
+        console.log(formData);
+        
+        // Use the previously declared cookies variable
+        fetch(`${BASE_URL}/api/v1/user/make-test-tenant`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            // body: JSON.stringify({ ...formData, cookies }), // Use cookies variable here
+            body: JSON.stringify({ ...formData })
+        })
+            .then(async response => {
+                const data = await response.json();
+                if (response.ok) {
+
+                    alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-danger");
+                    alert.classList.add("alert-success");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3500);
+                } else {
+
+                    alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-success");
+                    alert.classList.add("alert-danger");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
+                }
+            })
+            .catch((error) => {
+                alert.innerHTML = `${error.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-danger");
+                alert.classList.add("show");
+                setTimeout(() => {
+                    alert.classList.remove("show");
+                    alert.classList.add("fade");
+                }, 3000);
+            });
+    });
+
+})();

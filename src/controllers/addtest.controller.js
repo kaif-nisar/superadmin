@@ -24,7 +24,6 @@ const getNextSequenceValue = async (counterName) => {
 
 
 const addingTest = asyncHandler(async (req, res) => {
-    console.log("addtest called")
     // trim all values in req.body
     Object.entries(req.body).forEach(([key, value]) => {
         if (typeof value === "string") {
@@ -37,7 +36,9 @@ const addingTest = asyncHandler(async (req, res) => {
     const { Name, final_price, Short_name, category, Price, sampleType, method, instrument, parameters, interpretation, isDocumentedTest, user } = req.body;
     // const superAdmin = req.user.id // get the super admin id from token 
 
-    if (!Name || !category || !final_price || !Short_name || !Price || !sampleType) {
+    console.log(Name, category, final_price, Short_name,Price, sampleType);
+    
+    if (!Name || !category || !final_price || !Price || !sampleType) {
         return res.status(400).json({ message: "Missing required fields" })
     }
 
