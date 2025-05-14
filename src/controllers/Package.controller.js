@@ -23,7 +23,7 @@ const addPackagecontroller = asyncHandler(async (req, res) => {
     !packageFee ||
     !packagegender
   ) {
-    throw new ApiError(500, "All fields are required");
+    return res.status(401).json({message:"missing required feilds"});
   }
 
   const superAdmin = req.user; // get the super admin id from token
@@ -37,7 +37,7 @@ const addPackagecontroller = asyncHandler(async (req, res) => {
   });
 
   if (allreadyExistedpackage) {
-    throw new ApiError(400, "Test was already present in database");
+    return res.status(401).json({message:"Package already present in database"});
   }
 
   // Create the pannel in the database
@@ -70,12 +70,12 @@ const addPackagecontroller = asyncHandler(async (req, res) => {
 
   // Check if the pannel was successfully created
   if (!packageCreated) {
-    throw new ApiError(400, "Something went wrong while creating the pannel");
+    return res.status(401).json({message:"Something went wrong while creating package"});
   }
 
   // Send a success response
-  return res.json(
-    new ApiResponse(200, { packageCreated }, "Package created successfully")
+  return res.status(200).json(
+    {message:"package created successfully", package: packageCreated}
   );
 });
 
@@ -119,18 +119,16 @@ const editPackageController = asyncHandler(async (req, res) => {
 
   // Check for required fields
   if (!value1) {
-    throw new ApiError(400, "Package name is required");
+    return res.status(401).json({message:"Package name is required"});
   }
 
   console.log(value1);
   // Find the package by name
   const existingPackage = await Package.findOne({ _id: value1 });
 
-  console.log(existingPackage);
-
   // If package doesn't exist, throw an error
   if (!existingPackage) {
-    throw new ApiError(404, "Package not found");
+    return res.status(401).json({message:"Package not found"});
   }
 
   // Update package details
@@ -149,7 +147,7 @@ const editPackageController = asyncHandler(async (req, res) => {
 
   // Return success response
   return res.json(
-    new ApiResponse(200, { updatedPackage }, "Package updated successfully")
+   {message:"Package Updated successfully", updatedPackage: updatedPackage}
   );
 });
 

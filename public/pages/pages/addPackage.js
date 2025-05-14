@@ -255,6 +255,8 @@ function addpackage() {
 
             const namefield = document.getElementById('name');
             const errormessage = document.querySelector('.errormessage');
+            const alert = document.querySelector(".alert");
+
 
             if (namefield.value.trim().includes(",")) {
                 errormessage.style.display = "block";
@@ -269,6 +271,29 @@ function addpackage() {
             const packageFee = document.getElementById('fee').value;
             const packagegender = document.getElementById('gender').value;
             const final_price = document.getElementById('final-price').value;
+
+            if (!packageName || !packageFee || !final_price ) {
+                alert.innerHTML = `Missing required feilds<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-danger");
+                alert.classList.add("show");
+                setTimeout(() => {
+                    alert.classList.remove("show");
+                    alert.classList.add("fade");
+                }, 3000);
+                return;
+            }
+            if (inputarray.length === 0 && inputarray2.length === 0) {
+                alert.innerHTML = `Please select atleast one Test or panel<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-danger");
+                alert.classList.add("show");
+                setTimeout(() => {
+                    alert.classList.remove("show");
+                    alert.classList.add("fade");
+                }, 3000);
+                return;
+            }
 
             // Create the request body
             const requestBody = {
@@ -290,12 +315,40 @@ function addpackage() {
                     body: JSON.stringify(requestBody)
                 });
 
-                if (!response.ok) throw new Error('Failed to save package');
+                const data = await response.json();
+                if (response.ok) {
+                    alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-danger");
+                    alert.classList.add("alert-success");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
+                    setTimeout(() => {
+                        // Reload the page after successful creation
+                        location.reload();
+                    }, 3500);
+                } else {
 
-                alert('package saved successfully')
-                console.log("Package saved successfully", await response.json());
+                    alert.innerHTML = `${data.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                    alert.classList.remove("alert-success");
+                    alert.classList.add("alert-danger");
+                    alert.classList.add("show");
+                    setTimeout(() => {
+                        alert.classList.remove("show");
+                        alert.classList.add("fade");
+                    }, 3000);
+                }
             } catch (error) {
-                console.error("Error:", error);
+                alert.innerHTML = `${error.message}<button data-dismiss="alert" class="alert-dismissible close">✖</button>`;
+                alert.classList.remove("alert-success");
+                alert.classList.add("alert-danger");
+                alert.classList.add("show");
+                setTimeout(() => {
+                    alert.classList.remove("show");
+                    alert.classList.add("fade");
+                }, 3000);
             }
         });
 
