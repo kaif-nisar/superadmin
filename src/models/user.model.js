@@ -78,6 +78,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    pdfFormat: {
+      type: String,
+      default: "reportFormat1.html"
+    },
     ledger: [
       {
         transactionId: String, // Unique Transaction ID

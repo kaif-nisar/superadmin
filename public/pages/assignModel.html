@@ -182,6 +182,31 @@
                 margin-bottom: 20px;
             }
         }
+
+        .format1 {
+            background: url("../images/format2.png");
+
+        }
+        .format2 {
+            background: url("../images/format3.png");
+        }
+
+         .format {
+            height: 150px;
+            width: 115px;
+            border: 1px solid grey;
+            border-radius: 2px;
+            background-size: contain;
+        }
+
+        .format input {
+            margin: 5px;
+        }
+        .format-choice {
+            display: flex;
+            gap: 1.5rem;
+            flex-direction: row;
+        }
     </style>
 </head>
 
@@ -265,7 +290,19 @@
                     <label for="leaseTerms">Lease Terms (Months)</label>
                     <input type="number" id="leaseTerms" placeholder="Enter Lease Duration" required>
                 </div>
-
+                <label for="leaseTerms">Pdf Format</label>
+                <div class="form-group format-choice">
+                    <label for="format1">
+                    <div class="format1 format">
+                        <input type="radio" id="format1" name="format" value="reportFormat.html">
+                    </div>
+                    </label>
+                    <label for="format2">
+                        <div class="format2 format">
+                        <input type="radio" name="format" id="format2" value="reportFormat1.html" checked>
+                    </div>
+                    </label>
+                </div>
                 <button type="button" id="assignButton">Assign Franchise Model</button>
             </form>
         </div>

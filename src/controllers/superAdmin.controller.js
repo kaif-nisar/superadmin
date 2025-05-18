@@ -204,6 +204,7 @@ export const createTenant = asyncHandler(async (req, res) => {
           tenantId: tenant[0]._id,
           hierarchyPath: "/",
           isActive: true,
+          pdfFormat: addressDetails.pdfFormat || "reportFormat1.html"
         },
       ],
       { session }

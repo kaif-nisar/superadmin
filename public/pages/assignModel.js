@@ -34,8 +34,9 @@ const pincode = document.getElementById('pincode').value;
 const address = document.getElementById('address').value;
 const rentAmount = document.getElementById('rentAmount').value;
 const leaseTerms = document.getElementById('leaseTerms').value;
+const pdfFormat = document.querySelector('input[name="format"]:checked').value;
 
-if (franchiseName && rentAmount && leaseTerms && selectedLayer && fullName && email && phoneNo && username && password && state && district && pincode && address) {
+if (franchiseName && rentAmount && leaseTerms && selectedLayer && fullName && email && phoneNo && username && password && state && district && pincode && address && pdfFormat) {
  // Prepare payload for backend
  const payload = {
      name: franchiseName,
