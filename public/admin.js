@@ -4,6 +4,7 @@ let role;
 let username;
 let userRole;
 let BASE_URL = window.location.origin;
+let user;
 
 // Toggle sidebar functionality
 function toggleSidebar() {
@@ -104,6 +105,7 @@ async function verifyAccessToken() {
     username = data.user.username;
     role = data.user.role;
     userRole = data.user.role;
+    user = data.user;
     // Check if the user is an admin and extract the layer if available
     // If adminLayer is not provided in the API response, we can check localStorage
     // Or you can modify your backend to include this information

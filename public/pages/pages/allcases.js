@@ -4,10 +4,10 @@ async function allcases() {
 
     async function fetchBookings() {        
         try {
-            const response = await fetch(`${BASE_URL}/api/v1/user/get-bookings`, {
+            const response = await fetch(`http://localhost:8000/api/v1/user/get-bookings`, {
                 method: "POST",
             });
-            const response2 = await fetch(`${BASE_URL}/api/v1/user/getallbarcodesController`);
+            const response2 = await fetch(`http://localhost:8000/api/v1/user/getallbarcodesController`);
             const result2 = await response2.json();
             const result = await response.json(); 
             if (!response.ok) {
@@ -165,7 +165,7 @@ async function allcases() {
                         <td><button class="status-btn">${booking.status}</button></td>
                         <td class="actions">
                             <div class="enter-result">
-                                <a data-page="reportFormat" class="edit-report"><i class="fa-solid fa-pen-to-square"></i> View report</a>
+                                <a data-page="${user.pdfFormat}" class="edit-report"><i class="fa-solid fa-pen-to-square"></i> View report</a>
                             </div>
                             <i class="fas fa-ellipsis-h more-options" onclick="toggleDropdown(this)"></i>
                             <div class="dropdown-menu" style="display: none;">
@@ -260,7 +260,7 @@ async function allcases() {
 
         async function updatebookingStatus(bookingid, status) {
             try {
-                const response = await fetch(`${BASE_URL}/api/v1/user/statusBookingcontroller`, {
+                const response = await fetch(`http://localhost:8000/api/v1/user/statusBookingcontroller`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ bookingid, status }),
@@ -283,7 +283,7 @@ async function allcases() {
             }
 
             try {
-                const response = await fetch(`${BASE_URL}/api/v1/user/saveConversation`, {
+                const response = await fetch(`http://localhost:8000/api/v1/user/saveConversation`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -323,7 +323,7 @@ async function allcases() {
 
                     isFetching = true; // Set the flag to true before starting the fetch
                     try {
-                        const response = await fetch(`${BASE_URL}/api/v1/user/getConversationByBookingId`, {
+                        const response = await fetch(`http://localhost:3000/api/v1/user/getConversationByBookingId`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -371,7 +371,7 @@ async function allcases() {
                 }, 2000);
 
                 if (messagesDiv.innerHTML === '') {
-                    const response = await fetch(`${BASE_URL}/api/v1/user/getConversationByBookingId`, {
+                    const response = await fetch(`http://localhost:8000/api/v1/user/getConversationByBookingId`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -431,7 +431,7 @@ async function allcases() {
             row.querySelector(".view-bill").addEventListener("click", (e) => {
                 e.preventDefault();
                 saveBookingToLocalStorage(booking, row);
-                const url = `${BASE_URL}/admin.html?page=labreport`;
+                const url = `http://localhost:3000/admin.html?page=labreport`;
                 window.location.href = url;
             });
         }
@@ -440,14 +440,14 @@ async function allcases() {
             row.querySelector(".edit-report").addEventListener("click", (e) => {
                 e.preventDefault();
                 saveBookingToLocalStorage(booking, row);
-                const url = `${BASE_URL}/admin.html?page=reportFormat&value1=${booking.bookingId}`;
+                const url = `http://localhost:3000/admin.html?page=${user.pdfFormat}&value1=${booking.bookingId}`;
                 window.location.href = url;
             });
 
             row.querySelector(".download-report").addEventListener("click", (e) => {
                 e.preventDefault();
                 saveBookingToLocalStorage(booking, row);
-                const url = `${BASE_URL}/admin.html?page=labreport`;
+                const url = `http://localhost:3000/admin.html?page=labreport`;
                 window.location.href = url;
             });
         }
@@ -455,7 +455,7 @@ async function allcases() {
         row.querySelector(".ModifyCase").addEventListener("click", (e) => {
             e.preventDefault();
             saveBookingToLocalStorage(booking, row);
-            const url = `${BASE_URL}/admin.html?page=ModifyCase&value1=${booking.bookingId}`;
+            const url = `http://localhost:3000/admin.html?page=ModifyCase&value1=${booking.bookingId}`;
             window.location.href = url;
         });
     }

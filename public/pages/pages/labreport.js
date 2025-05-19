@@ -1399,8 +1399,9 @@ async function loadfunction() {
 
     }
     await renderData();
-    setTimeout(() => {
-        fetchEnteredResult();
+    setTimeout(async () => {
+        await fetchEnteredResult();
+        lisresult();
     }, 2000);
     addInputListeners();
     // await fetchEnteredResult();
@@ -1408,7 +1409,6 @@ async function loadfunction() {
 
     // for fetching previous results
     async function fetchEnteredResult() {
-        console.log("fetchEnteredResult");
         const tablecontainer = document.querySelectorAll("#tables-container .section table tbody tr:not(.exclude)");
         // const tablecontainer = document.querySelectorAll('.value-input');
         try {
@@ -1451,6 +1451,26 @@ async function loadfunction() {
         } catch (error) {
             console.error("Error fetching entered results:", error);
         }
+    }
+
+    async function lisresult() {
+        const getresultbutton = document.getElementById('getresult');
+        getresultbutton.style.display = "flex";
+
+        getresultbutton.addEventListener("click", async () => {
+
+            try {
+                const response = await fetch("https://www.occuhelth.com/api/v1/user/get-result", {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body: JSON.stringify({branchId: booking.bookingId, testId})
+                })
+            } catch (error) {
+                console.error(error.message);
+            }
+        });
     }
 
     // for seeting default time in input fields
@@ -1757,7 +1777,7 @@ async function loadfunction() {
             if (response.ok && saveOnly) {
                 const result = await response.json();
                 const barcodeId = result._id;
-                const url = `${BASE_URL}/admin.html?page=reportFormat&value1=${barcodeId}`;
+                const url = `${BASE_URL}/admin.html?page=${user.pdfFormat}&value1=${barcodeId}`;
                 window.location.href = url;
                 localStorage.clear();
             } else {
